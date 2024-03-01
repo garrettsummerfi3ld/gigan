@@ -176,3 +176,6 @@ logs/
 
 # Folder that has CTRE Phoenix Sim device config storage
 ctre_sim/
+
+# Every time there is a Gradle build, there is a BuildConstants.java file created. This file injects Git information into the code and should not be committed.
+src/main/java/frc/robot/BuildConstants.java
