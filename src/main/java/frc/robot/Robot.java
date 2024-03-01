@@ -15,7 +15,6 @@ import frc.robot.Constants.AlertContants;
 import frc.robot.Constants.HardwareConstants;
 import frc.robot.util.Alert;
 import frc.robot.util.Alert.AlertType;
-
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +53,10 @@ public class Robot extends LoggedRobot {
       new Alert(
           "Critical battery! Robot may brown out during runtime! Switch battery immediately!",
           AlertType.ERROR);
-  private final Alert noLog = new Alert("No log file found! Please check the USB stick.", AlertType.WARNING);
-  private final Alert gitDirty = new Alert("Git repository is dirty! Please commit or stash changes.", AlertType.WARNING);
+  private final Alert noLog =
+      new Alert("No log file found! Please check the USB stick.", AlertType.WARNING);
+  private final Alert gitDirty =
+      new Alert("Git repository is dirty! Please commit or stash changes.", AlertType.WARNING);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -90,17 +91,17 @@ public class Robot extends LoggedRobot {
       if (Paths.get("/U").getParent() != null) {
         Logger.addDataReceiver(new WPILOGWriter());
         noLog.set(true);
-    } else {
-      setUseTiming(false);
-      try {
-        String logPath = LogFileUtil.findReplayLog();
-        Logger.setReplaySource(new WPILOGReader(logPath));
-      } catch (Exception e) {
-        e.printStackTrace();
-        Logger.addDataReceiver(new NT4Publisher());
+      } else {
+        setUseTiming(false);
+        try {
+          String logPath = LogFileUtil.findReplayLog();
+          Logger.setReplaySource(new WPILOGReader(logPath));
+        } catch (Exception e) {
+          e.printStackTrace();
+          Logger.addDataReceiver(new NT4Publisher());
+        }
       }
     }
-  }
 
     Logger.start();
 
