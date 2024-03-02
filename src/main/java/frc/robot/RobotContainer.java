@@ -11,8 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ConveyorSubsystem;
@@ -37,12 +37,12 @@ public class RobotContainer {
   private final DumpSubsystem dump = new DumpSubsystem();
 
   // Controllers and joysticks are defined here
-  final CommandXboxController driverXbox = new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.DRIVER_CONTROLLER);
-  final CommandJoystick copilotJoystick = new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
+  final CommandXboxController driverXbox =
+      new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.DRIVER_CONTROLLER);
+  final CommandJoystick copilotJoystick =
+      new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
@@ -86,7 +86,13 @@ public class RobotContainer {
   private void configureBindings() {
     driverXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
     driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-    driverXbox.b().whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    driverXbox
+        .b()
+        .whileTrue(
+            Commands.deferredProxy(
+                () ->
+                    drivebase.driveToPose(
+                        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
     driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
     copilotJoystick.trigger().onTrue(Commands.runOnce(dump::dump));

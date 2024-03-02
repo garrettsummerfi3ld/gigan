@@ -11,7 +11,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.HardwareConstants;
 
 public class DumpSubsystem extends SubsystemBase {
-  private final DoubleSolenoid dumpSolenoid = new DoubleSolenoid(HardwareConstants.REV_PCM_ID, PneumaticsModuleType.REVPH, HardwareConstants.PneumaticsChannel.DUMP_OUT, HardwareConstants.PneumaticsChannel.DUMP_IN);
+  private final DoubleSolenoid dumpSolenoid =
+      new DoubleSolenoid(
+          HardwareConstants.REV_PCM_ID,
+          PneumaticsModuleType.REVPH,
+          HardwareConstants.PneumaticsChannel.DUMP_OUT,
+          HardwareConstants.PneumaticsChannel.DUMP_IN);
   private boolean isDumped = false;
 
   public DumpSubsystem() {
@@ -19,21 +24,16 @@ public class DumpSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-  }
+  public void periodic() {}
 
-  /**
-   * Dumps the dump bed.
-   */
+  /** Dumps the dump bed. */
   public void dump() {
     dumpSolenoid.set(DoubleSolenoid.Value.kForward);
     isDumped = true;
     SmartDashboard.putBoolean(getName(), isDumped);
   }
 
-  /**
-   * Retracts the dump bed.
-   */
+  /** Retracts the dump bed. */
   public void retract() {
     dumpSolenoid.set(DoubleSolenoid.Value.kReverse);
     isDumped = false;

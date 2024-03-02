@@ -4,15 +4,17 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import frc.robot.Constants.MechanismConstants.Intake;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.MechanismConstants.Intake;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private final CANSparkMax intakeSushi = new CANSparkMax(Intake.INTAKE_SUSHI, MotorType.kBrushless);
-  private final CANSparkMax intakeFront = new CANSparkMax(Intake.INTAKE_FRONT, MotorType.kBrushless);
+  private final CANSparkMax intakeSushi =
+      new CANSparkMax(Intake.INTAKE_SUSHI, MotorType.kBrushless);
+  private final CANSparkMax intakeFront =
+      new CANSparkMax(Intake.INTAKE_FRONT, MotorType.kBrushless);
 
   public IntakeSubsystem() {
     intakeSushi.setInverted(Intake.INTAKE_SUSHI_INVERTED);
@@ -27,25 +29,19 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  /**
-   * Run the intake at a set speed in the {@link Intake} class.
-   */
+  /** Run the intake at a set speed in the {@link Intake} class. */
   public void runIntake() {
     intakeSushi.set(Intake.INTAKE_SUSHI_SPEED);
     intakeFront.set(Intake.INTAKE_FRONT_SPEED);
   }
 
-  /**
-   * Stop the intake.
-   */
+  /** Stop the intake. */
   public void stopIntake() {
     intakeSushi.set(0);
     intakeFront.set(0);
   }
 
-  /**
-   * Reverse the intake at a set speed in the {@link Intake} class.
-   */
+  /** Reverse the intake at a set speed in the {@link Intake} class. */
   public void reverseIntake() {
     intakeSushi.set(-Intake.INTAKE_SUSHI_SPEED);
     intakeFront.set(-Intake.INTAKE_FRONT_SPEED);

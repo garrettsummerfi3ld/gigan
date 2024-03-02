@@ -4,17 +4,18 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants.Conveyor;
 
 public class ConveyorSubsystem extends SubsystemBase {
-  private final CANSparkMax conveyorMotorLeft = new CANSparkMax(Conveyor.CONVEYOR_MOTOR_LEFT, MotorType.kBrushless);
-  private final CANSparkMax conveyorMotorRight = new CANSparkMax(Conveyor.CONVEYOR_MOTOR_RIGHT, MotorType.kBrushless);
-  
+  private final CANSparkMax conveyorMotorLeft =
+      new CANSparkMax(Conveyor.CONVEYOR_MOTOR_LEFT, MotorType.kBrushless);
+  private final CANSparkMax conveyorMotorRight =
+      new CANSparkMax(Conveyor.CONVEYOR_MOTOR_RIGHT, MotorType.kBrushless);
+
   public ConveyorSubsystem() {
     conveyorMotorLeft.setInverted(Conveyor.CONVEYOR_MOTOR_LEFT_INVERTED);
     conveyorMotorRight.setInverted(Conveyor.CONVEYOR_MOTOR_RIGHT_INVERTED);
@@ -26,25 +27,19 @@ public class ConveyorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {}
 
-  /**
-   * Run the conveyor at a set speed in the {@link Conveyor} class.
-   */
+  /** Run the conveyor at a set speed in the {@link Conveyor} class. */
   public void runConveyor() {
     conveyorMotorLeft.set(Conveyor.CONVEYOR_MOTOR_SPEED);
     conveyorMotorRight.set(Conveyor.CONVEYOR_MOTOR_SPEED);
   }
 
-  /**
-   * Stop the conveyor.
-   */
+  /** Stop the conveyor. */
   public void stopConveyor() {
     conveyorMotorLeft.set(0);
     conveyorMotorRight.set(0);
   }
 
-  /**
-   * Reverse the conveyor at a set speed in the {@link Conveyor} class.
-   */
+  /** Reverse the conveyor at a set speed in the {@link Conveyor} class. */
   public void reverseConveyor() {
     conveyorMotorLeft.set(-Conveyor.CONVEYOR_MOTOR_SPEED);
     conveyorMotorRight.set(-Conveyor.CONVEYOR_MOTOR_SPEED);
