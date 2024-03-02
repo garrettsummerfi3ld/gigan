@@ -16,12 +16,28 @@
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 4.442343244356504,
+        "y": 5.4420595608366
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 6.0
+        "x": 3.8382602982710514,
+        "y": 4.944353985238815
+      },
+      "nextControl": {
+        "x": 4.964228813663145,
+        "y": 5.872042495053048
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.561569418138712,
+        "y": 6.960800646749036
+      },
+      "prevControl": {
+        "x": 4.902184319848963,
+        "y": 6.992732276335502
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +59,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Blue Station 3",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

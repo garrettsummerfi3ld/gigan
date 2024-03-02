@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 1.8277250778744722,
+        "y": 7.816825321727087
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 1.8477117058129515,
+        "y": 6.693768735844762
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 7.49076068329003,
+        "y": 7.4094290207555575
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 6.0
+        "x": 6.49076068329003,
+        "y": 7.4094290207555575
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,9 +43,9 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Blue Station 3",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 90.05666698229342,
     "velocity": 0
   },
   "useDefaultConstraints": true
