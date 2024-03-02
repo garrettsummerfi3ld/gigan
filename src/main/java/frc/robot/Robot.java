@@ -48,12 +48,8 @@ public class Robot extends LoggedRobot {
           AlertType.ERROR);
   private final Alert lowBatt =
       new Alert(
-          "Low battery! Please charge the robot or switch the battery out for a charged one.",
+          "Low battery! Please charge the robot or switch the battery out for a charged one. Robot may brownout and become uncontrollable!",
           AlertType.WARNING);
-  private final Alert critBatt =
-      new Alert(
-          "Critical battery! Robot may brown out during runtime! Switch battery immediately!",
-          AlertType.ERROR);
   private final Alert noLog =
       new Alert("No log file found! Please check the USB stick.", AlertType.WARNING);
   private final Alert gitDirty =
@@ -147,12 +143,8 @@ public class Robot extends LoggedRobot {
     if (RobotController.getBatteryVoltage() < AlertContants.LOW_BATTERY_VOLTAGE
         && disabledTimer.hasElapsed(AlertContants.LOW_BATTERY_TIME)) {
       lowBatt.set(true);
-    } else if (RobotController.getBatteryVoltage() < AlertContants.CRITICAL_BATTERY_VOLTAGE
-        && disabledTimer.hasElapsed(AlertContants.CRITICAL_BATTERY_TIME)) {
-      critBatt.set(true);
     } else {
       lowBatt.set(false);
-      critBatt.set(false);
     }
 
     // Log list of NT clients

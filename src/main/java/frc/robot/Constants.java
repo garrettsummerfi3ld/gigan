@@ -132,7 +132,5 @@ public final class Constants {
     public static final double CAN_ALERT_TIME = 0.5;
     public static final double LOW_BATTERY_VOLTAGE = 11.0;
     public static final double LOW_BATTERY_TIME = 2.0;
-    public static final double CRITICAL_BATTERY_VOLTAGE = 10.5;
-    public static final double CRITICAL_BATTERY_TIME = 1.0;
   }
 }
