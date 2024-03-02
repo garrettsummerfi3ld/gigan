@@ -95,7 +95,7 @@ public class RobotContainer {
                         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
     driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
-    copilotJoystick.trigger().onTrue(Commands.runOnce(dump::dump));
+    copilotJoystick.trigger().onTrue(Commands.runOnce(dump::extend));
     copilotJoystick.trigger().onFalse(Commands.runOnce(dump::retract));
     copilotJoystick.button(3).whileTrue(Commands.runOnce(intake::runIntake));
     copilotJoystick.button(4).whileTrue(Commands.runOnce(intake::reverseIntake));

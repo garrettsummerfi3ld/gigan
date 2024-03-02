@@ -27,7 +27,7 @@ public class DumpSubsystem extends SubsystemBase {
   public void periodic() {}
 
   /** Dumps the dump bed. */
-  public void dump() {
+  public void extend() {
     dumpSolenoid.set(DoubleSolenoid.Value.kForward);
     isDumped = true;
     SmartDashboard.putBoolean(getName(), isDumped);
