@@ -27,6 +27,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.littletonrobotics.urcl.URCL;
 
+import com.ctre.phoenix6.SignalLogger;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -91,6 +93,7 @@ public class Robot extends LoggedRobot {
       if (Paths.get("/U").getParent() != null) {
         Logger.addDataReceiver(new WPILOGWriter());
         noLog.set(true);
+        SignalLogger.start();
       } else {
         setUseTiming(false);
         try {
@@ -98,7 +101,6 @@ public class Robot extends LoggedRobot {
           Logger.setReplaySource(new WPILOGReader(logPath));
         } catch (Exception e) {
           e.printStackTrace();
-          Logger.addDataReceiver(new NT4Publisher());
         }
       }
     }
