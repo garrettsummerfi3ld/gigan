@@ -72,12 +72,10 @@ public class SwerveSubsystem extends SubsystemBase {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    swerveDrive.setHeadingCorrection(
-        false); // Heading correction should only be used while controlling the robot via angle.
-    swerveDrive.setCosineCompensator(
-        !SwerveDriveTelemetry
-            .isSimulation); // Disables cosine compensation for simulations since it causes
-    // discrepancies not seen in real life.
+    // Heading correction should only be used while controlling the robot via angle.
+    swerveDrive.setHeadingCorrection(false);
+    // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+    swerveDrive.setCosineCompensator(!SwerveDriveTelemetry.isSimulation);
     setupPathPlanner();
   }
 
@@ -95,7 +93,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /** Setup AutoBuilder for PathPlanner. */
   public void setupPathPlanner() {
     AutoBuilder.configureHolonomic(
-        this::getPose, // Robot pose supplier
+        this::getPose,// Robot pose supplier
         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting
         // pose)
         this::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -202,8 +200,8 @@ public class SwerveSubsystem extends SubsystemBase {
     // this kind of control.
     return run(
         () -> {
-          double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth controll out
-          double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth controll out
+          double xInput = Math.pow(translationX.getAsDouble(), 3); // Smooth control out
+          double yInput = Math.pow(translationY.getAsDouble(), 3); // Smooth control out
           // Make the robot move
           driveFieldOriented(
               swerveDrive.swerveController.getTargetSpeeds(

@@ -12,8 +12,12 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.DumpSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.io.File;
 
@@ -28,11 +32,17 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
+  private final IntakeSubsystem intake = new IntakeSubsystem();
+  private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
+  private final DumpSubsystem dump = new DumpSubsystem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  final CommandXboxController driverXbox = new CommandXboxController(0);
+  // Controllers and joysticks are defined here
+  final CommandXboxController driverXbox = new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.DRIVER_CONTROLLER);
+  final CommandJoystick copilotJoystick = new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
@@ -60,6 +70,7 @@ public class RobotContainer {
             () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.Deadbands.LEFT_X),
             () -> driverXbox.getRightX() * 0.5);
 
+    drivebase.setMotorBrake(true);
     drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
   }
 
@@ -73,18 +84,17 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+    driverXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
     driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-    driverXbox
-        .b()
-        .whileTrue(
-            Commands.deferredProxy(
-                () ->
-                    drivebase.driveToPose(
-                        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+    driverXbox.b().whileTrue(Commands.deferredProxy(() -> drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+    copilotJoystick.trigger().onTrue(Commands.runOnce(dump::dump));
+    copilotJoystick.trigger().onFalse(Commands.runOnce(dump::retract));
+    copilotJoystick.button(3).whileTrue(Commands.runOnce(intake::runIntake));
+    copilotJoystick.button(4).whileTrue(Commands.runOnce(intake::reverseIntake));
+    copilotJoystick.button(5).whileTrue(Commands.runOnce(conveyor::runConveyor));
+    copilotJoystick.button(6).whileTrue(Commands.runOnce(conveyor::reverseConveyor));
   }
 
   /**
@@ -95,13 +105,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return drivebase.getAutonomousCommand("New Auto");
-  }
-
-  public void setDriveMode() {
-    // drivebase.setDefaultCommand();
-  }
-
-  public void setMotorBrake(boolean brake) {
-    drivebase.setMotorBrake(brake);
   }
 }

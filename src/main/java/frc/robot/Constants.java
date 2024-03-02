@@ -64,10 +64,10 @@ public final class Constants {
      * to match the physical properties of the conveyor.
      */
     public static final class Conveyor {
-      public static final int CONVEYOR_MOTOR_1 = 1;
-      public static final int CONVEYOR_MOTOR_2 = 2;
-      public static final boolean CONVEYOR_MOTOR_1_INVERTED = true;
-      public static final boolean CONVEYOR_MOTOR_2_INVERTED = false;
+      public static final int CONVEYOR_MOTOR_LEFT = 1;
+      public static final int CONVEYOR_MOTOR_RIGHT = 2;
+      public static final boolean CONVEYOR_MOTOR_LEFT_INVERTED = true;
+      public static final boolean CONVEYOR_MOTOR_RIGHT_INVERTED = false;
       public static final double CONVEYOR_MOTOR_SPEED = 0.38;
     }
   }
