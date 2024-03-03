@@ -7,7 +7,10 @@
     "Blue Station 2",
     "Blue Station 3"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Red",
+    "Blue"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

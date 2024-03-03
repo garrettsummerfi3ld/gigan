@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.OperatorConstants.Deadbands;
+import frc.robot.commands.swerve.AbsoluteDrive;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DumpSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -28,6 +29,11 @@ import java.io.File;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  // Controllers and joysticks are defined here
+  final CommandXboxController driverXbox =
+      new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.DRIVER_CONTROLLER);
+  final CommandJoystick copilotJoystick =
+      new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase =
@@ -36,42 +42,28 @@ public class RobotContainer {
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final DumpSubsystem dump = new DumpSubsystem();
 
-  // Controllers and joysticks are defined here
-  final CommandXboxController driverXbox =
-      new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.DRIVER_CONTROLLER);
-  final CommandJoystick copilotJoystick =
-      new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
+  // Apply deadbands to the joysticks
+  double driverLeftX = MathUtil.applyDeadband(driverXbox.getLeftX(), Deadbands.LEFT_X);
+  double driverLeftY = MathUtil.applyDeadband(driverXbox.getLeftY(), Deadbands.LEFT_Y);
+  double driverRightX = MathUtil.applyDeadband(driverXbox.getRightX(), Deadbands.RIGHT_X);
+  double driverRightY = MathUtil.applyDeadband(driverXbox.getRightY(), Deadbands.RIGHT_Y);
+
+  private final AbsoluteDrive absoluteDrive =
+      new AbsoluteDrive(
+          drivebase,
+          () -> driverLeftX,
+          () -> driverLeftY,
+          () -> driverRightX,
+          () -> driverRightY
+          );
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
-    // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the desired angle NOT angular rotation
-    Command driveFieldOrientedDirectAngle =
-        drivebase.driveCommand(
-            () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.Deadbands.LEFT_Y),
-            () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.Deadbands.LEFT_X),
-            () -> driverXbox.getRightX(),
-            () -> driverXbox.getRightY());
-
-    // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the angular velocity of the robot
-    Command driveFieldOrientedAnglularVelocity =
-        drivebase.driveCommand(
-            () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.Deadbands.LEFT_Y),
-            () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.Deadbands.LEFT_X),
-            () -> driverXbox.getRightX() * 0.5);
-
     drivebase.setMotorBrake(true);
-    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+    drivebase.setDefaultCommand(absoluteDrive);
   }
 
   /**
@@ -95,12 +87,12 @@ public class RobotContainer {
                         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
     driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
-    copilotJoystick.trigger().onTrue(Commands.runOnce(dump::extend));
-    copilotJoystick.trigger().onFalse(Commands.runOnce(dump::retract));
-    copilotJoystick.button(3).whileTrue(Commands.runOnce(intake::runIntake));
-    copilotJoystick.button(4).whileTrue(Commands.runOnce(intake::reverseIntake));
-    copilotJoystick.button(5).whileTrue(Commands.runOnce(conveyor::runConveyor));
-    copilotJoystick.button(6).whileTrue(Commands.runOnce(conveyor::reverseConveyor));
+    copilotJoystick.trigger().onTrue(Commands.runOnce(dump::extend).repeatedly());
+    copilotJoystick.trigger().onFalse(Commands.runOnce(dump::retract).repeatedly());
+    copilotJoystick.button(3).whileTrue(Commands.runOnce(intake::runIntake).repeatedly());
+    copilotJoystick.button(4).whileTrue(Commands.runOnce(intake::reverseIntake).repeatedly());
+    copilotJoystick.button(5).whileTrue(Commands.runOnce(conveyor::runConveyor).repeatedly());
+    copilotJoystick.button(6).whileTrue(Commands.runOnce(conveyor::reverseConveyor).repeatedly());
   }
 
   /**

@@ -119,6 +119,7 @@ public final class Constants {
       public static final double LEFT_X = 0.1;
       public static final double LEFT_Y = 0.1;
       public static final double RIGHT_X = 0.1;
+      public static final double RIGHT_Y = 0.1;
       public static final double TURN_CONSTANT = 6;
     }
   }
