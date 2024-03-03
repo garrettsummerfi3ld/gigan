@@ -42,20 +42,18 @@ public class RobotContainer {
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final DumpSubsystem dump = new DumpSubsystem();
 
-  // Apply deadbands to the joysticks
-  double driverLeftX = MathUtil.applyDeadband(driverXbox.getLeftX(), Deadbands.LEFT_X);
-  double driverLeftY = MathUtil.applyDeadband(driverXbox.getLeftY(), Deadbands.LEFT_Y);
-  double driverRightX = MathUtil.applyDeadband(driverXbox.getRightX(), Deadbands.RIGHT_X);
-  double driverRightY = MathUtil.applyDeadband(driverXbox.getRightY(), Deadbands.RIGHT_Y);
-
-  private final AbsoluteDrive absoluteDrive =
-      new AbsoluteDrive(
-          drivebase, () -> driverLeftX, () -> driverLeftY, () -> driverRightX, () -> driverRightY);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    AbsoluteDrive absoluteDrive =
+        new AbsoluteDrive(
+            drivebase,
+            () -> MathUtil.applyDeadband(-driverXbox.getLeftY(), Deadbands.LEFT_Y),
+            () -> MathUtil.applyDeadband(-driverXbox.getLeftX(), Deadbands.LEFT_X),
+            () -> MathUtil.applyDeadband(-driverXbox.getRightX(), Deadbands.RIGHT_X),
+            () -> MathUtil.applyDeadband(-driverXbox.getRightY(), Deadbands.RIGHT_Y));
 
     drivebase.setMotorBrake(true);
     drivebase.setDefaultCommand(absoluteDrive);

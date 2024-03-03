@@ -81,8 +81,8 @@ public class Robot extends LoggedRobot {
         break;
     }
 
+    Logger.addDataReceiver(new NT4Publisher());
     if (isReal()) {
-      Logger.addDataReceiver(new NT4Publisher());
       LoggedPowerDistribution.getInstance(HardwareConstants.REV_PDH_ID, ModuleType.kRev);
       Logger.registerURCL(URCL.startExternal());
       if (Paths.get("/U").getParent() != null) {
