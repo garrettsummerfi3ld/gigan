@@ -56,7 +56,10 @@ public class Robot extends LoggedRobot {
       new Alert("Git repository is dirty! Please commit or stash changes.", AlertType.WARNING);
   private final Alert gitBranchMain =
       new Alert("Git branch is not main! Please merge or rebase.", AlertType.WARNING);
-  private final Alert gitBranchEvent = new Alert("Git branch is on an event branch, commit often and push changes to GitHub", AlertType.INFO);
+  private final Alert gitBranchEvent =
+      new Alert(
+          "Git branch is on an event branch, commit often and push changes to GitHub",
+          AlertType.INFO);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -83,7 +86,7 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("GitDirty", "Unknown");
         break;
     }
-    
+
     if (!BuildConstants.GIT_BRANCH.equals("main")) {
       gitBranchMain.set(true);
     }
