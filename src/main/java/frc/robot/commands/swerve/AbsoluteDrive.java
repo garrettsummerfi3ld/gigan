@@ -26,7 +26,7 @@ public class AbsoluteDrive extends Command {
 
   /**
    * Used to drive a swerve robot in full field-centric mode. vX and vY supply translation inputs,
-   * where x is torwards/away from alliance wall and y is left/right. headingHorzontal and
+   * where x is towards/away from alliance wall and y is left/right. headingHorzontal and
    * headingVertical are the Cartesian coordinates from which the robot's angle will be derived—
    * they will be converted to a polar angle, which the robot will rotate to.
    *
@@ -79,14 +79,14 @@ public class AbsoluteDrive extends Command {
     // Prevent Movement After Auto
     if (initRotation) {
       if (headingHorizontal.getAsDouble() == 0 && headingVertical.getAsDouble() == 0) {
-        // Get the curretHeading
+        // Get the current Heading
         Rotation2d firstLoopHeading = swerve.getHeading();
 
         // Set the Current Heading to the desired Heading
         desiredSpeeds =
             swerve.getTargetSpeeds(0, 0, firstLoopHeading.getSin(), firstLoopHeading.getCos());
       }
-      // Dont Init Rotation Again
+      // Don't Init Rotation Again
       initRotation = false;
     }
 

@@ -23,7 +23,7 @@ public class AbsoluteFieldDrive extends Command {
 
   /**
    * Used to drive a swerve robot in full field-centric mode. vX and vY supply translation inputs,
-   * where x is torwards/away from alliance wall and y is left/right. headingHorzontal and
+   * where x is towards/away from alliance wall and y is left/right. headingHorzontal and
    * headingVertical are the Cartesian coordinates from which the robot's angle will be derived—
    * they will be converted to a polar angle, which the robot will rotate to.
    *
@@ -53,7 +53,6 @@ public class AbsoluteFieldDrive extends Command {
   public void execute() {
 
     // Get the desired chassis speeds based on a 2 joystick module.
-
     ChassisSpeeds desiredSpeeds =
         swerve.getTargetSpeeds(
             vX.getAsDouble(), vY.getAsDouble(), new Rotation2d(heading.getAsDouble() * Math.PI));
