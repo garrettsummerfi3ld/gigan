@@ -50,12 +50,7 @@ public class RobotContainer {
 
   private final AbsoluteDrive absoluteDrive =
       new AbsoluteDrive(
-          drivebase,
-          () -> driverLeftX,
-          () -> driverLeftY,
-          () -> driverRightX,
-          () -> driverRightY
-          );
+          drivebase, () -> driverLeftX, () -> driverLeftY, () -> driverRightX, () -> driverRightY);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
