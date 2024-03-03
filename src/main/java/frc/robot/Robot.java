@@ -54,6 +54,9 @@ public class Robot extends LoggedRobot {
       new Alert("No log file found! Please check the USB stick.", AlertType.WARNING);
   private final Alert gitDirty =
       new Alert("Git repository is dirty! Please commit or stash changes.", AlertType.WARNING);
+  private final Alert gitBranchMain =
+      new Alert("Git branch is not main! Please merge or rebase.", AlertType.WARNING);
+  private final Alert gitBranchEvent = new Alert("Git branch is on an event branch, commit often and push changes to GitHub", AlertType.INFO);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -79,6 +82,13 @@ public class Robot extends LoggedRobot {
       default:
         Logger.recordMetadata("GitDirty", "Unknown");
         break;
+    }
+    
+    if (!BuildConstants.GIT_BRANCH.equals("main")) {
+      gitBranchMain.set(true);
+    }
+    if (BuildConstants.GIT_BRANCH.contains("event")) {
+      gitBranchEvent.set(true);
     }
 
     Logger.addDataReceiver(new NT4Publisher());
