@@ -70,6 +70,19 @@ public final class Constants {
       public static final boolean CONVEYOR_MOTOR_RIGHT_INVERTED = false;
       public static final double CONVEYOR_MOTOR_SPEED = 0.38;
     }
+
+    /**
+     * Flywheel subsystem constants. These constants should be used to tune the flywheel's behavior
+     * to match the physical properties of the flywheel. This would be used in conjunction to the
+     * conveyor as having a flywheel alongside the conveyor would be beneficial.
+     */
+    public static final class Flywheel {
+      public static final int FLYWHEEL_MOTOR_LEFT = 3;
+      public static final int FLYWHEEL_MOTOR_RIGHT = 4;
+      public static final boolean FLYWHEEL_MOTOR_LEFT_INVERTED = false;
+      public static final boolean FLYWHEEL_MOTOR_RIGHT_INVERTED = false;
+      public static final double FLYWHEEL_MOTOR_SPEED = 0.5;
+    }
   }
 
   /** Constants for the drivetrain. */
