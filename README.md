@@ -47,6 +47,51 @@ _If you are using the WPILib extension:_
 >
 > You can also access commonly used WPILib commands when clicking on the WPILib icon on an open file, this only shows up if you have WPILib VS Code opened
 
+### Competition use
+
+> [!WARNING]
+>
+> You should always before a competition to create an `event` branch, to separate the new code written and not dirty up the main branch. You will need to install [Event Deploy for WPILib](https://marketplace.visualstudio.com/items?itemName=Mechanical-Advantage.event-deploy-wpilib) from the VS Code marketplace.
+
+To create an `event` branch, open up the repository in either GitHub Desktop, VS Code, or a terminal.
+
+It is also recommended to have a naming convention of `event/[name-of-event]` where all changes are committed to that branch during an event.
+
+If you were to have multiple programmers present at an event, you can also have another naming convention of `event/[name-of-event]/[programmer]`.
+
+### VS Code
+
+In the "Source Control" tab, go to the branches tab and click on the "+" button to create a branch.
+
+Name the branch accordingly.
+
+You can also switch branches with the same process.
+
+### GitHub Desktop
+
+Click on the current branch name and click on the "New Branch" button.
+
+Name the branch accordingly.
+
+You can also switch branches with the same process.
+
+### Terminal
+
+Browse to your project in the terminal, with `cd` commands to search around. Once in the root directory of the project, input the following commands:
+
+```bash
+# Creates and checks out a new branch under the name provided
+git checkout -b event/[name-of-event-here]
+```
+
+Name the branch accordingly.
+
+To switch branches back and forth input the following into the terminal:
+
+```bash
+git checkout [branch-name-here]
+```
+
 ## Features
 
 ### Code features and quality gates
@@ -63,9 +108,17 @@ _If you are using the WPILib extension:_
 
 ### Robot features
 
-[TBD]
+- YAGSL is used for the swerve drivetrain
+- AdvantageKit logging and diagnostics
+  - Unofficial Rev CAN Logger to perform additional logging
+  - Power Distribution logging for power status during robot runtime
+  - Writing all logs directly to a USB Drive connected to the RoboRIO
+- PhotonVision setup for performing autonomous tasks with Note detection
+- PathPlanner to run semi-autonomous or full autonomous tasks
+- NetworkAlerts support for any alerts relating to the operation of the robot
 
 ## Requirements
 
 - WPILib 2024.3.1
 - Internet connection (for Gradle to download dependencies)
+- NetworkAlerts (For Shuffleboard/FRC Web Components)
