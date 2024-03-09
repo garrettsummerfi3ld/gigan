@@ -84,6 +84,7 @@ public class Robot extends LoggedRobot {
         break;
       default:
         Logger.recordMetadata("GitDirty", "Unknown");
+        gitDirty.set(true);
         break;
     }
 
