@@ -7,6 +7,7 @@ package frc.robot;
 import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,6 +20,7 @@ import frc.robot.util.Alert.AlertType;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import org.littletonrobotics.junction.LogDataReceiver;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -98,6 +100,7 @@ public class Robot extends LoggedRobot {
     Logger.addDataReceiver(new NT4Publisher());
     if (isReal()) {
       LoggedPowerDistribution.getInstance(HardwareConstants.REV_PDH_ID, ModuleType.kRev);
+      Logger.addDataReceiver((LogDataReceiver) new PneumaticHub(HardwareConstants.REV_PCM_ID));
       Logger.registerURCL(URCL.startExternal());
       if (Paths.get("/U").getParent() != null) {
         Logger.addDataReceiver(new WPILOGWriter());

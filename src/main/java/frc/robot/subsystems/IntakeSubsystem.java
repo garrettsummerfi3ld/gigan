@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants.Intake;
 
@@ -16,12 +18,17 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax intakeFront =
       new CANSparkMax(Intake.INTAKE_FRONT, MotorType.kBrushless);
 
+  private final ShuffleboardTab intake = Shuffleboard.getTab("Intake");
+
   public IntakeSubsystem() {
     intakeSushi.setInverted(Intake.INTAKE_SUSHI_INVERTED);
     intakeFront.setInverted(Intake.INTAKE_FRONT_INVERTED);
 
     intakeFront.setIdleMode(IdleMode.kBrake);
     intakeSushi.setIdleMode(IdleMode.kBrake);
+
+    intake.add("Intake Sushi", intakeSushi);
+    intake.add("Intake Front", intakeFront);
   }
 
   @Override

@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants.Conveyor;
 import frc.robot.Constants.MechanismConstants.Flywheel;
@@ -20,6 +22,7 @@ public class ConveyorSubsystem extends SubsystemBase {
       new CANSparkMax(Flywheel.FLYWHEEL_MOTOR_LEFT, MotorType.kBrushless);
   private final CANSparkMax flywheelMotorRight =
       new CANSparkMax(Flywheel.FLYWHEEL_MOTOR_RIGHT, MotorType.kBrushless);
+  ShuffleboardTab conveyor = Shuffleboard.getTab("Conveyor");
 
   public ConveyorSubsystem() {
     conveyorMotorLeft.setInverted(Conveyor.CONVEYOR_MOTOR_LEFT_INVERTED);
@@ -31,10 +34,17 @@ public class ConveyorSubsystem extends SubsystemBase {
     conveyorMotorRight.setIdleMode(IdleMode.kBrake);
     flywheelMotorLeft.setIdleMode(IdleMode.kBrake);
     flywheelMotorRight.setIdleMode(IdleMode.kBrake);
+
+    conveyor.add("Conveyor Motor Left", conveyorMotorLeft);
+    conveyor.add("Conveyor Motor Right", conveyorMotorRight);
+    conveyor.add("Flywheel Motor Left", flywheelMotorLeft);
+    conveyor.add("Flywheel Motor Right", flywheelMotorRight);
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 
   /** Run the conveyor at a set speed in the {@link Conveyor} class. */
   public void runConveyor() {
@@ -55,9 +65,21 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
   /** Run the flywheel at a set speed in the {@link Flywheel} class. */
-  public void runFlywheel() {
-    flywheelMotorLeft.set(Flywheel.FLYWHEEL_MOTOR_SPEED);
-    flywheelMotorRight.set(Flywheel.FLYWHEEL_MOTOR_SPEED);
+  public void runFlywheel(FlywheelSpeed speed) {
+    var flywheelMotorSpeed = 0.0;
+    switch (speed) {
+      case LOW:
+        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_LOW;
+        break;
+      case NORMAL:
+        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_NORMAL;
+        break;
+      case HIGH:
+        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_HIGH;
+        break;
+    }
+    flywheelMotorLeft.set(flywheelMotorSpeed);
+    flywheelMotorRight.set(flywheelMotorSpeed);
   }
 
   /** Stop the flywheel. */
@@ -67,9 +89,21 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
   /** Reverse the flywheel at a set speed in the {@link Flywheel} class. */
-  public void reverseFlywheel() {
-    flywheelMotorLeft.set(-Flywheel.FLYWHEEL_MOTOR_SPEED);
-    flywheelMotorRight.set(-Flywheel.FLYWHEEL_MOTOR_SPEED);
+  public void reverseFlywheel(FlywheelSpeed speed) {
+    var flywheelMotorSpeed = 0.0;
+    switch (speed) {
+      case LOW:
+        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_LOW;
+        break;
+      case NORMAL:
+        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_NORMAL;
+        break;
+      case HIGH:
+        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_HIGH;
+        break;
+    }
+    flywheelMotorLeft.set(-flywheelMotorSpeed);
+    flywheelMotorRight.set(-flywheelMotorSpeed);
   }
 
   /**
@@ -78,7 +112,7 @@ public class ConveyorSubsystem extends SubsystemBase {
    */
   public void runConveyorAndFlywheel() {
     runConveyor();
-    runFlywheel();
+    runFlywheel(FlywheelSpeed.NORMAL);
   }
 
   /** Stop the conveyor and flywheel. */
@@ -93,6 +127,12 @@ public class ConveyorSubsystem extends SubsystemBase {
    */
   public void reverseConveyorAndFlywheel() {
     reverseConveyor();
-    reverseFlywheel();
+    reverseFlywheel(FlywheelSpeed.NORMAL);
+  }
+
+  enum FlywheelSpeed {
+    LOW,
+    NORMAL,
+    HIGH
   }
 }
