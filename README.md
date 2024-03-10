@@ -110,7 +110,7 @@ git checkout [branch-name-here]
 
 - YAGSL is used for the swerve drivetrain
 - AdvantageKit logging and diagnostics
-  - Unofficial Rev CAN Logger to perform additional logging
+  - Unofficial Rev CAN Logger (URCL) to perform additional logging
   - Power Distribution logging for power status during robot runtime
   - Writing all logs directly to a USB Drive connected to the RoboRIO
 - PhotonVision setup for performing autonomous tasks with Note detection
