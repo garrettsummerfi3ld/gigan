@@ -18,6 +18,7 @@ public class ClimbSubsystem extends SubsystemBase {
           HardwareConstants.PneumaticsChannel.CLIMB_OUT,
           HardwareConstants.PneumaticsChannel.CLIMB_IN);
   private boolean isClimbing = false;
+
   public ClimbSubsystem() {
     SmartDashboard.putBoolean(getName(), isClimbing);
   }
