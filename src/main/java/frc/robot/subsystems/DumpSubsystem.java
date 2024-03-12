@@ -15,8 +15,8 @@ public class DumpSubsystem extends SubsystemBase {
       new DoubleSolenoid(
           HardwareConstants.REV_PCM_ID,
           PneumaticsModuleType.REVPH,
-          HardwareConstants.PneumaticsChannel.DUMP_OUT,
-          HardwareConstants.PneumaticsChannel.DUMP_IN);
+          HardwareConstants.PneumaticsChannels.DUMP_OUT,
+          HardwareConstants.PneumaticsChannels.DUMP_IN);
   private boolean isDumped = false;
 
   public DumpSubsystem() {

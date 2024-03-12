@@ -15,8 +15,8 @@ public class ClimbSubsystem extends SubsystemBase {
       new DoubleSolenoid(
           HardwareConstants.REV_PCM_ID,
           PneumaticsModuleType.REVPH,
-          HardwareConstants.PneumaticsChannel.CLIMB_OUT,
-          HardwareConstants.PneumaticsChannel.CLIMB_IN);
+          HardwareConstants.PneumaticsChannels.CLIMB_OUT,
+          HardwareConstants.PneumaticsChannels.CLIMB_IN);
   private boolean isClimbing = false;
 
   public ClimbSubsystem() {
