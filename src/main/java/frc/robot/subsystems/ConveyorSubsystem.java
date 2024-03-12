@@ -22,7 +22,6 @@ public class ConveyorSubsystem extends SubsystemBase {
       new CANSparkMax(Flywheel.FLYWHEEL_MOTOR_LEFT, MotorType.kBrushless);
   private final CANSparkMax flywheelMotorRight =
       new CANSparkMax(Flywheel.FLYWHEEL_MOTOR_RIGHT, MotorType.kBrushless);
-  ShuffleboardTab conveyor = Shuffleboard.getTab("Conveyor");
 
   public ConveyorSubsystem() {
     conveyorMotorLeft.setInverted(Conveyor.CONVEYOR_MOTOR_LEFT_INVERTED);
@@ -34,11 +33,6 @@ public class ConveyorSubsystem extends SubsystemBase {
     conveyorMotorRight.setIdleMode(IdleMode.kBrake);
     flywheelMotorLeft.setIdleMode(IdleMode.kBrake);
     flywheelMotorRight.setIdleMode(IdleMode.kBrake);
-
-    conveyor.add("Conveyor Motor Left", conveyorMotorLeft);
-    conveyor.add("Conveyor Motor Right", conveyorMotorRight);
-    conveyor.add("Flywheel Motor Left", flywheelMotorLeft);
-    conveyor.add("Flywheel Motor Right", flywheelMotorRight);
   }
 
   @Override
