@@ -9,13 +9,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants.Deadbands;
-import frc.robot.commands.swerve.AbsoluteDrive;
+import frc.robot.commands.swerve.AbsoluteDriveAdv;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem.FlywheelSpeed;
@@ -32,10 +33,11 @@ import java.io.File;
  */
 public class RobotContainer {
   // Controllers and joysticks are defined here
-  final CommandXboxController driverXbox =
+  final CommandXboxController pilotXbox =
       new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.PILOT_CONTROLLER);
   final CommandJoystick copilotJoystick =
       new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
+  final XboxController driverXboxHID = pilotXbox.getHID();
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase =
@@ -51,13 +53,16 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    AbsoluteDrive absoluteDrive =
-        new AbsoluteDrive(
+    AbsoluteDriveAdv absoluteDrive =
+        new AbsoluteDriveAdv(
             drivebase,
-            () -> MathUtil.applyDeadband(-driverXbox.getLeftY(), Deadbands.LEFT_Y),
-            () -> MathUtil.applyDeadband(-driverXbox.getLeftX(), Deadbands.LEFT_X),
-            () -> MathUtil.applyDeadband(-driverXbox.getRightX(), Deadbands.RIGHT_X),
-            () -> MathUtil.applyDeadband(-driverXbox.getRightY(), Deadbands.RIGHT_Y));
+            () -> MathUtil.applyDeadband(-pilotXbox.getLeftX(), Deadbands.LEFT_X),
+            () -> MathUtil.applyDeadband(-pilotXbox.getLeftY(), Deadbands.LEFT_Y),
+            () -> MathUtil.applyDeadband(-pilotXbox.getRightX(), Deadbands.RIGHT_X),
+            () -> pilotXbox.pov(0).getAsBoolean(),
+            () -> pilotXbox.pov(180).getAsBoolean(),
+            () -> pilotXbox.pov(270).getAsBoolean(),
+            () -> pilotXbox.pov(90).getAsBoolean());
 
     drivebase.setMotorBrake(true);
     drivebase.setDefaultCommand(absoluteDrive);
