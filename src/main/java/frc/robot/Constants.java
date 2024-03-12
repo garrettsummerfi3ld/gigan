@@ -36,7 +36,9 @@ public final class Constants {
 
     public static final class PneumaticsChannel {
       public static final int DUMP_OUT = 0;
-      public static final int DUMP_IN = 1;
+      public static final int DUMP_IN = 15;
+    public static final int CLIMB_OUT = 3;
+    public static final int CLIMB_IN = 5;
     }
   }
 
