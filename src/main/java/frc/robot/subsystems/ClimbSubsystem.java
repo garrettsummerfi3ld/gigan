@@ -20,6 +20,8 @@ public class ClimbSubsystem extends SubsystemBase {
   private boolean isClimbing = false;
 
   public ClimbSubsystem() {
+    System.out.println("[CLIMB] ClimbSubsystem initialized.");
+    retract();
     SmartDashboard.putBoolean(getName(), isClimbing);
   }
 

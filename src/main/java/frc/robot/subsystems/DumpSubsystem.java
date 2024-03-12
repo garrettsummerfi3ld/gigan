@@ -20,6 +20,8 @@ public class DumpSubsystem extends SubsystemBase {
   private boolean isDumped = false;
 
   public DumpSubsystem() {
+    System.out.println("[DUMP] DumpSubsystem initialized.");
+    retract();
     SmartDashboard.putBoolean(getName(), isDumped);
   }
 

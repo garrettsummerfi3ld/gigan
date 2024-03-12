@@ -22,6 +22,7 @@ public class ConveyorSubsystem extends SubsystemBase {
       new CANSparkMax(Flywheel.FLYWHEEL_MOTOR_RIGHT, MotorType.kBrushless);
 
   public ConveyorSubsystem() {
+    System.out.println("[CONVEYOR] ConveyorSubsystem initialized.");
     conveyorMotorLeft.setInverted(Conveyor.CONVEYOR_MOTOR_LEFT_INVERTED);
     conveyorMotorRight.setInverted(Conveyor.CONVEYOR_MOTOR_RIGHT_INVERTED);
     flywheelMotorLeft.setInverted(Flywheel.FLYWHEEL_MOTOR_LEFT_INVERTED);
@@ -38,10 +39,18 @@ public class ConveyorSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  /** Run the conveyor at a set speed in the {@link Conveyor} class. */
-  public void runConveyor() {
-    conveyorMotorLeft.set(Conveyor.CONVEYOR_MOTOR_SPEED);
-    conveyorMotorRight.set(Conveyor.CONVEYOR_MOTOR_SPEED);
+  /**
+   * Run the conveyor at a set speed in the {@link Conveyor} class.
+   *
+   * @param isReversed Whether or not to reverse the conveyor.
+   */
+  public void runConveyor(boolean isReversed) {
+    double conveyorMotorSpeed = Conveyor.CONVEYOR_MOTOR_SPEED;
+    if (isReversed) {
+      conveyorMotorSpeed *= -1;
+    }
+    conveyorMotorLeft.set(conveyorMotorSpeed);
+    conveyorMotorRight.set(conveyorMotorSpeed);
   }
 
   /** Stop the conveyor. */
@@ -50,14 +59,13 @@ public class ConveyorSubsystem extends SubsystemBase {
     conveyorMotorRight.set(0);
   }
 
-  /** Reverse the conveyor at a set speed in the {@link Conveyor} class. */
-  public void reverseConveyor() {
-    conveyorMotorLeft.set(-Conveyor.CONVEYOR_MOTOR_SPEED);
-    conveyorMotorRight.set(-Conveyor.CONVEYOR_MOTOR_SPEED);
-  }
-
-  /** Run the flywheel at a set speed in the {@link Flywheel} class. */
-  public void runFlywheel(FlywheelSpeed speed) {
+  /**
+   * Run the flywheel at a set speed in the {@link Flywheel} class.
+   *
+   * @param speed The speed to run the flywheel at.
+   * @param isReversed Whether or not to reverse the flywheel.
+   */
+  public void runFlywheel(FlywheelSpeed speed, boolean isReversed) {
     var flywheelMotorSpeed = 0.0;
     switch (speed) {
       case LOW:
@@ -69,6 +77,9 @@ public class ConveyorSubsystem extends SubsystemBase {
       case HIGH:
         flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_HIGH;
         break;
+    }
+    if (isReversed) {
+      flywheelMotorSpeed *= -1;
     }
     flywheelMotorLeft.set(flywheelMotorSpeed);
     flywheelMotorRight.set(flywheelMotorSpeed);
@@ -80,31 +91,13 @@ public class ConveyorSubsystem extends SubsystemBase {
     flywheelMotorRight.set(0);
   }
 
-  /** Reverse the flywheel at a set speed in the {@link Flywheel} class. */
-  public void reverseFlywheel(FlywheelSpeed speed) {
-    var flywheelMotorSpeed = 0.0;
-    switch (speed) {
-      case LOW:
-        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_LOW;
-        break;
-      case NORMAL:
-        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_NORMAL;
-        break;
-      case HIGH:
-        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_HIGH;
-        break;
-    }
-    flywheelMotorLeft.set(-flywheelMotorSpeed);
-    flywheelMotorRight.set(-flywheelMotorSpeed);
-  }
-
   /**
    * Run the conveyor and flywheel at a set speed in the {@link Conveyor} and {@link Flywheel}
    * class.
    */
   public void runConveyorAndFlywheel() {
-    runConveyor();
-    runFlywheel(FlywheelSpeed.NORMAL);
+    runConveyor(false);
+    runFlywheel(FlywheelSpeed.NORMAL, false);
   }
 
   /** Stop the conveyor and flywheel. */
@@ -118,11 +111,11 @@ public class ConveyorSubsystem extends SubsystemBase {
    * class.
    */
   public void reverseConveyorAndFlywheel() {
-    reverseConveyor();
-    reverseFlywheel(FlywheelSpeed.NORMAL);
+    runConveyor(false);
+    runFlywheel(FlywheelSpeed.NORMAL, true);
   }
 
-  enum FlywheelSpeed {
+  public enum FlywheelSpeed {
     LOW,
     NORMAL,
     HIGH

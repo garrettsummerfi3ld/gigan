@@ -111,7 +111,7 @@ public final class Constants {
        * software.
        */
       public static class Port {
-        public static final int DRIVER_CONTROLLER = 0;
+        public static final int PILOT_CONTROLLER = 0;
         public static final int COPILOT_CONTROLLER = 1;
       }
 

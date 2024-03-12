@@ -115,6 +115,7 @@ public class Robot extends LoggedRobot {
     }
 
     Logger.start();
+    System.out.println("[ROBOT] Logger started!");
 
     // Reset and start timers for error checking
     canErrorTimerInit.reset();
@@ -123,6 +124,8 @@ public class Robot extends LoggedRobot {
     canErrorTimer.start();
     disabledTimer.reset();
     disabledTimer.start();
+    System.out.println("[ROBOT] Timers started!");
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();

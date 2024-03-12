@@ -17,6 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
       new CANSparkMax(Intake.INTAKE_FRONT, MotorType.kBrushless);
 
   public IntakeSubsystem() {
+    System.out.println("[INTAKE] IntakeSubsystem initialized.");
     intakeSushi.setInverted(Intake.INTAKE_SUSHI_INVERTED);
     intakeFront.setInverted(Intake.INTAKE_FRONT_INVERTED);
 
@@ -29,10 +30,20 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  /** Run the intake at a set speed in the {@link Intake} class. */
-  public void runIntake() {
-    intakeSushi.set(Intake.INTAKE_SUSHI_SPEED);
-    intakeFront.set(Intake.INTAKE_FRONT_SPEED);
+  /**
+   * Run the intake at a set speed in the {@link Intake} class.
+   *
+   * @param isReversed Whether or not to reverse the intake.
+   */
+  public void runIntake(boolean isReversed) {
+    double intakeSushiSpeed = Intake.INTAKE_SUSHI_SPEED;
+    double intakeFrontSpeed = Intake.INTAKE_FRONT_SPEED;
+    if (isReversed) {
+      intakeSushiSpeed *= -1;
+      intakeFrontSpeed *= -1;
+    }
+    intakeSushi.set(intakeSushiSpeed);
+    intakeFront.set(intakeFrontSpeed);
   }
 
   /** Stop the intake. */
@@ -41,9 +52,39 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeFront.set(0);
   }
 
-  /** Reverse the intake at a set speed in the {@link Intake} class. */
-  public void reverseIntake() {
-    intakeSushi.set(-Intake.INTAKE_SUSHI_SPEED);
-    intakeFront.set(-Intake.INTAKE_FRONT_SPEED);
+  /**
+   * Run the intake sushi at a set speed in the {@link Intake} class.
+   *
+   * @param isReversed Whether or not to reverse the intake sushi.
+   */
+  public void runIntakeSushi(boolean isReversed) {
+    double intakeSushiSpeed = Intake.INTAKE_SUSHI_SPEED;
+    if (isReversed) {
+      intakeSushiSpeed *= -1;
+    }
+    intakeSushi.set(intakeSushiSpeed);
+  }
+
+  /** Stop the intake sushi. */
+  public void stopIntakeSushi() {
+    intakeSushi.set(0);
+  }
+
+  /**
+   * Run the intake front at a set speed in the {@link Intake} class.
+   *
+   * @param isReversed Whether or not to reverse the intake front.
+   */
+  public void runIntakeFront(boolean isReversed) {
+    double intakeFrontSpeed = Intake.INTAKE_FRONT_SPEED;
+    if (isReversed) {
+      intakeFrontSpeed *= -1;
+    }
+    intakeFront.set(intakeFrontSpeed);
+  }
+
+  /** Stop the intake front. */
+  public void stopIntakeFront() {
+    intakeFront.set(0);
   }
 }

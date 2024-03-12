@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants.Deadbands;
 import frc.robot.commands.swerve.AbsoluteDrive;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.ConveyorSubsystem.FlywheelSpeed;
 import frc.robot.subsystems.DumpSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
@@ -31,7 +33,7 @@ import java.io.File;
 public class RobotContainer {
   // Controllers and joysticks are defined here
   final CommandXboxController driverXbox =
-      new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.DRIVER_CONTROLLER);
+      new CommandXboxController(Constants.OperatorConstants.Joysticks.Port.PILOT_CONTROLLER);
   final CommandJoystick copilotJoystick =
       new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
 
@@ -41,9 +43,11 @@ public class RobotContainer {
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final DumpSubsystem dump = new DumpSubsystem();
+  private final ClimbSubsystem climb = new ClimbSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    System.out.println("[ROBOT] RobotContainer initialized.");
     // Configure the trigger bindings
     configureBindings();
 
@@ -69,23 +73,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driverXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
-    driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-    driverXbox
-        .b()
-        .whileTrue(
-            Commands.deferredProxy(
-                () ->
-                    drivebase.driveToPose(
-                        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-
-    copilotJoystick.trigger().onTrue(Commands.runOnce(dump::extend).repeatedly());
-    copilotJoystick.trigger().onFalse(Commands.runOnce(dump::retract).repeatedly());
-    copilotJoystick.button(3).whileTrue(Commands.runOnce(intake::runIntake).repeatedly());
-    copilotJoystick.button(4).whileTrue(Commands.runOnce(intake::reverseIntake).repeatedly());
-    copilotJoystick.button(5).whileTrue(Commands.runOnce(conveyor::runConveyor).repeatedly());
-    copilotJoystick.button(6).whileTrue(Commands.runOnce(conveyor::reverseConveyor).repeatedly());
+    System.out.println("[BINDS] Configuring bindings");
+    configurePilotController();
+    configureCopilotController();
+    System.out.println("[BINDS] Bindings configured");
   }
 
   /**
@@ -96,5 +87,167 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return drivebase.getAutonomousCommand("New Auto");
+  }
+
+  /**
+   * Configure the button bindings for the pilot controller.
+   *
+   * <p>This controller is used to drive the robot and control the swerve drive.
+   *
+   * <p>The A button is used to zero the gyro. The X button is used to add a fake vision reading.
+   * The B button is used to drive to a specific pose. The Y button is used to lock the swerve
+   * drive.
+   *
+   * <p>This is using an Xbox controller.
+   */
+  public void configurePilotController() {
+    System.out.println("[BINDS] Configuring pilot controller");
+    driverXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
+    driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+    driverXbox
+        .b()
+        .whileTrue(
+            Commands.deferredProxy(
+                () ->
+                    drivebase.driveToPose(
+                        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+    driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+    System.out.println("[BINDS] Pilot controller configured");
+  }
+
+  /**
+   * Configure the button bindings for the copilot controller.
+   *
+   * <p>This controller is used to control the intake, conveyor, dump, and climber.
+   *
+   * <p>The trigger is used to extend the dump. The thumb trigger is used to retract the dump.
+   *
+   * <p>Button 3 is used to run the intake and conveyor in reverse. Button 4 is used to run the
+   * intake and conveyor forward. Button 5 is used to run the intake sushi in reverse. Button 6 is
+   * used to run the intake sushi forward. Button 7 is used to run the conveyor and flywheel at low
+   * speed. Button 9 is used to run the conveyor forward. Button 10 is used to stop the conveyor.
+   * Button 11 is used to run the conveyor and flywheel at normal speed. Button 12 is used to run
+   * the conveyor and flywheel at high speed.
+   *
+   * <p>The POV is used to control the flywheel. POV at values 315, 0, and 45 are used to run the
+   * flywheels at full speed. POV at values 135, 180, and 225 are used to run the flywheels at slow
+   * speed.
+   *
+   * <p>Throttle is used to control the climber. The values are inverted because of the way the
+   * controller values are laid out. Throttle at 1 is used to run the climber up. Throttle at -1 is
+   * used to run the climber down.
+   */
+  public void configureCopilotController() {
+    System.out.println("[BINDS] Configuring copilot controller");
+    copilotJoystick.trigger().onTrue(Commands.runOnce(dump::extend).repeatedly());
+    copilotJoystick.trigger().onFalse(Commands.runOnce(dump::retract).repeatedly());
+    copilotJoystick
+        .button(3)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      intake.runIntakeFront(false);
+                      conveyor.runConveyor(false);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(4)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      intake.runIntakeFront(true);
+                      conveyor.runConveyor(true);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(5)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      intake.runIntakeSushi(false);
+                      conveyor.runConveyor(false);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(6)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      intake.runIntakeSushi(true);
+                      conveyor.runConveyor(true);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(7)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      conveyor.runFlywheel(FlywheelSpeed.LOW, false);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(9)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      conveyor.runConveyor(true);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(10)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      conveyor.runConveyor(false);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(11)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      conveyor.runFlywheel(FlywheelSpeed.LOW, false);
+                    })
+                .repeatedly());
+    copilotJoystick
+        .button(12)
+        .whileTrue(
+            Commands.runOnce(
+                    () -> {
+                      conveyor.runFlywheel(FlywheelSpeed.NORMAL, false);
+                    })
+                .repeatedly());
+
+    copilotJoystick
+        .pov(0)
+        .whileTrue(
+            Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.HIGH, false)).repeatedly());
+    copilotJoystick
+        .pov(45)
+        .whileTrue(
+            Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.HIGH, false)).repeatedly());
+    copilotJoystick
+        .pov(315)
+        .whileTrue(
+            Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.HIGH, false)).repeatedly());
+    copilotJoystick
+        .pov(135)
+        .whileTrue(
+            Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.LOW, false)).repeatedly());
+    copilotJoystick
+        .pov(180)
+        .whileTrue(
+            Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.LOW, false)).repeatedly());
+    copilotJoystick
+        .pov(225)
+        .whileTrue(
+            Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.LOW, false)).repeatedly());
+
+    if (copilotJoystick.getThrottle() > 0) {
+      Commands.runOnce(climb::extend).repeatedly();
+    } else if (copilotJoystick.getThrottle() < 0) {
+      Commands.runOnce(climb::retract).repeatedly();
+    }
+    System.out.println("[BINDS] Copilot controller configured");
   }
 }
