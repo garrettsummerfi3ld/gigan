@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -25,6 +27,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.io.File;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.photonvision.PhotonCamera;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -39,6 +46,13 @@ public class RobotContainer {
       new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
   final XboxController driverXboxHID = pilotXbox.getHID();
 
+  // Cameras are defined here
+  final PhotonCamera limelight = new PhotonCamera("limelight");
+  final PhotonCamera rasperryPi = new PhotonCamera("raspberry-pi");
+
+  // AprilTag fields are defined here
+  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
@@ -46,6 +60,9 @@ public class RobotContainer {
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final DumpSubsystem dump = new DumpSubsystem();
   private final ClimbSubsystem climb = new ClimbSubsystem();
+
+  // Autonous chooser
+  private final LoggedDashboardChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -56,16 +73,19 @@ public class RobotContainer {
     AbsoluteDriveAdv absoluteDrive =
         new AbsoluteDriveAdv(
             drivebase,
-            () -> MathUtil.applyDeadband(-pilotXbox.getLeftX(), Deadbands.LEFT_X),
-            () -> MathUtil.applyDeadband(-pilotXbox.getLeftY(), Deadbands.LEFT_Y),
+            () -> MathUtil.applyDeadband(-pilotXbox.getLeftY(), Deadbands.LEFT_X),
+            () -> MathUtil.applyDeadband(-pilotXbox.getLeftX(), Deadbands.LEFT_Y),
             () -> MathUtil.applyDeadband(-pilotXbox.getRightX(), Deadbands.RIGHT_X),
-            () -> pilotXbox.pov(0).getAsBoolean(),
             () -> pilotXbox.pov(180).getAsBoolean(),
-            () -> pilotXbox.pov(270).getAsBoolean(),
-            () -> pilotXbox.pov(90).getAsBoolean());
+            () -> pilotXbox.pov(0).getAsBoolean(),
+            () -> pilotXbox.pov(90).getAsBoolean(),
+            () -> pilotXbox.pov(270).getAsBoolean());
 
     drivebase.setMotorBrake(true);
     drivebase.setDefaultCommand(absoluteDrive);
+
+    // Create a LoggedDashboardChooser to select the autonomous command
+    autoChooser = new LoggedDashboardChooser<>("Autonomous Chooser", AutoBuilder.buildAutoChooser());
   }
 
   /**
@@ -90,8 +110,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return drivebase.getAutonomousCommand(autoChooser.get().getName());
   }
 
   /**
@@ -108,15 +127,16 @@ public class RobotContainer {
   public void configurePilotController() {
     System.out.println("[BINDS] Configuring pilot controller");
     pilotXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
-    pilotXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+    pilotXbox.x().onTrue(Commands.runOnce(() -> drivebase.aimAtTarget(limelight)));
     pilotXbox
         .b()
         .whileTrue(
             Commands.deferredProxy(
                 () ->
                     drivebase.driveToPose(
-                        new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
+                        new Pose2d(new Translation2d(2, 7.5), Rotation2d.fromDegrees(0)))));
     pilotXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+    pilotXbox.leftBumper().whileTrue(Commands.runOnce(() -> drivebase.aimAtTarget(rasperryPi)).repeatedly());
     System.out.println("[BINDS] Pilot controller configured");
   }
 

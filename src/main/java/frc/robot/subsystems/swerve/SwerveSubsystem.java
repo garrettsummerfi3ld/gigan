@@ -381,6 +381,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * Resets the gyro angle to zero and resets odometry to the same position, but facing toward 0.
    */
   public void zeroGyro() {
+    System.out.println("[SWERVE] Zeroing Gyro");
     swerveDrive.zeroGyro();
   }
 
@@ -476,6 +477,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /** Lock the swerve drive to prevent it from moving. */
   public void lock() {
+    System.out.println("[SWERVE] Locking movement");
     swerveDrive.lockPose();
   }
 
