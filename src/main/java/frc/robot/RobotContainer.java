@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
@@ -26,11 +27,8 @@ import frc.robot.subsystems.DumpSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.io.File;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.photonvision.PhotonCamera;
-
-import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -85,7 +83,8 @@ public class RobotContainer {
     drivebase.setDefaultCommand(absoluteDrive);
 
     // Create a LoggedDashboardChooser to select the autonomous command
-    autoChooser = new LoggedDashboardChooser<>("Autonomous Chooser", AutoBuilder.buildAutoChooser());
+    autoChooser =
+        new LoggedDashboardChooser<>("Autonomous Chooser", AutoBuilder.buildAutoChooser());
   }
 
   /**
@@ -136,7 +135,9 @@ public class RobotContainer {
                     drivebase.driveToPose(
                         new Pose2d(new Translation2d(2, 7.5), Rotation2d.fromDegrees(0)))));
     pilotXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-    pilotXbox.leftBumper().whileTrue(Commands.runOnce(() -> drivebase.aimAtTarget(rasperryPi)).repeatedly());
+    pilotXbox
+        .leftBumper()
+        .whileTrue(Commands.runOnce(() -> drivebase.aimAtTarget(rasperryPi)).repeatedly());
     System.out.println("[BINDS] Pilot controller configured");
   }
 
