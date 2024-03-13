@@ -59,7 +59,7 @@ public class RobotContainer {
   private final DumpSubsystem dump = new DumpSubsystem();
   private final ClimbSubsystem climb = new ClimbSubsystem();
 
-  // Autonous chooser
+  // Autonomous chooser
   private final LoggedDashboardChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
