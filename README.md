@@ -116,9 +116,11 @@ git checkout [branch-name-here]
 - [PhotonVision](https://photonvision.org/) setup for performing autonomous tasks with Note detection
 - [PathPlanner](https://github.com/mjansen4857/pathplanner) to run semi-autonomous or full autonomous tasks
 - [NetworkAlerts](https://github.com/Mechanical-Advantage/NetworkAlerts) support for any alerts relating to the operation of the robot
+  - To install NetworkAlerts for Shuffleboard, run `py driverstation/install-networkalerts.py` on any computer.
 
 ## Requirements
 
 - WPILib 2024.3.1
 - Internet connection (for Gradle to download dependencies)
 - NetworkAlerts (For Shuffleboard/FRC Web Components)
+  - Automatic installation requires [Python 3](https://www.python.org/) to be installed
