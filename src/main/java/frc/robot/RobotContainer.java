@@ -107,16 +107,16 @@ public class RobotContainer {
    */
   public void configurePilotController() {
     System.out.println("[BINDS] Configuring pilot controller");
-    driverXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
-    driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-    driverXbox
+    pilotXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
+    pilotXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+    pilotXbox
         .b()
         .whileTrue(
             Commands.deferredProxy(
                 () ->
                     drivebase.driveToPose(
                         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))));
-    driverXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+    pilotXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
     System.out.println("[BINDS] Pilot controller configured");
   }
 
