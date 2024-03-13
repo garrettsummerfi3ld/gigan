@@ -1,6 +1,6 @@
 # gigan
 
-A 2024 Cresendo FRC robot written in Java using GradleRIO and WPILib. Focus on stability and rich diagnostics for driver operation.
+A 2024 Crescendo FRC robot written in Java using GradleRIO and WPILib. Focus on stability and rich diagnostics for driver operation.
 
 ## Build Status
 
