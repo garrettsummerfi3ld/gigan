@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
+
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -113,6 +115,9 @@ public class Robot extends LoggedRobot {
         }
       }
     }
+
+    PortForwarder.add(5800, "photonvision-limelight", 5800);
+    PortForwarder.add(5800, "photonvision-rpi", 5800);
 
     Logger.start();
     System.out.println("[ROBOT] Logger started!");
