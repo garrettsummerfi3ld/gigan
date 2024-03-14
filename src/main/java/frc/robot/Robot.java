@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
-
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
