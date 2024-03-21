@@ -33,9 +33,9 @@ public class Vision extends SubsystemBase {
 
   /**
    * Creates a new Vision subsystem, powered by PhotonVision.
-   * 
-   * <p>PhotonVision is a vision processing library that provides a simple API for interacting with a
-   * variety of vision targets, including reflective tape, vision targets, and AprilTags.
+   *
+   * <p>PhotonVision is a vision processing library that provides a simple API for interacting with
+   * a variety of vision targets, including reflective tape, vision targets, and AprilTags.
    */
   public Vision() {
     System.out.println("[VISION] Vision subsystem initialized.");
@@ -128,7 +128,8 @@ public class Vision extends SubsystemBase {
   /**
    * Get the latest result from the conveyor camera
    *
-   * @return the latest result from the conveyor camera in the form of a {@link PhotonPipelineResult}
+   * @return the latest result from the conveyor camera in the form of a {@link
+   *     PhotonPipelineResult}
    */
   public PhotonPipelineResult getConveyorCameraResult() {
     return conveyorCamera.getLatestResult();
