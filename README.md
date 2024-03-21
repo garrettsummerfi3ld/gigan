@@ -120,7 +120,7 @@ git checkout [branch-name-here]
 
 ## Requirements
 
-- WPILib 2024.3.1
+- [WPILib 2024.3.2](https://github.com/wpilibsuite/allwpilib/releases/tag/v2024.3.2)
 - Internet connection (for Gradle to download dependencies)
-- NetworkAlerts (For Shuffleboard/FRC Web Components)
+- [NetworkAlerts](https://github.com/Mechanical-Advantage/NetworkAlerts) (For Shuffleboard/FRC Web Components)
   - Automatic installation requires [Python 3](https://www.python.org/) to be installed
