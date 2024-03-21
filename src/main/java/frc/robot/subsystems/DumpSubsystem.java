@@ -21,11 +21,13 @@ public class DumpSubsystem extends SubsystemBase {
 
   /**
    * Creates a dump subsystem.
-   * 
-   * <p>When the robot is initialized, the dump is retracted to avoid damage and the state of the dump is set to false.
-   * 
-   * <p>When the robot is dumping, the dump is extended which activates the dump bed when dumping a Note into the AMP.
-   * 
+   *
+   * <p>When the robot is initialized, the dump is retracted to avoid damage and the state of the
+   * dump is set to false.
+   *
+   * <p>When the robot is dumping, the dump is extended which activates the dump bed when dumping a
+   * Note into the AMP.
+   *
    * <p>When the robot is not dumping, the dump is retracted to avoid damage.
    */
   public DumpSubsystem() {

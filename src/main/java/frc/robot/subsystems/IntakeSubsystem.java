@@ -18,10 +18,11 @@ public class IntakeSubsystem extends SubsystemBase {
 
   /**
    * Creates the intake subsystem.
-   * 
+   *
    * <p>When the robot is initialized, the intake sushi and front motors are set to brake mode.
-   * 
-   * <p>When the robot is initialized, the intake sushi and front motors are set to their respective inverted values.
+   *
+   * <p>When the robot is initialized, the intake sushi and front motors are set to their respective
+   * inverted values.
    */
   public IntakeSubsystem() {
     System.out.println("[INTAKE] IntakeSubsystem initialized.");

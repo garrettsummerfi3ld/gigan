@@ -23,10 +23,11 @@ public class ConveyorSubsystem extends SubsystemBase {
 
   /**
    * Creates the conveyor subsystem.
-   * 
+   *
    * <p>When the robot is initialized, the conveyor and flywheel motors are set to brake mode.
-   * 
-   * <p>When the robot is initialized, the conveyor and flywheel motors are set to their respective inverted values.
+   *
+   * <p>When the robot is initialized, the conveyor and flywheel motors are set to their respective
+   * inverted values.
    */
   public ConveyorSubsystem() {
     System.out.println("[CONVEYOR] ConveyorSubsystem initialized.");

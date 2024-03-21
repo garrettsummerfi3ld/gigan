@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants.Deadbands;
-import frc.robot.commands.swerve.AbsoluteDrive;
 import frc.robot.commands.DoNothing;
+import frc.robot.commands.swerve.AbsoluteDrive;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem.FlywheelSpeed;
@@ -115,7 +115,8 @@ public class RobotContainer {
   }
 
   /**
-   * Configure the button bindings for the pilot controller from the {@link configureBindings} method.
+   * Configure the button bindings for the pilot controller from the {@link configureBindings}
+   * method.
    *
    * <p>This controller is used to drive the robot and control the swerve drive.
    *
@@ -144,7 +145,8 @@ public class RobotContainer {
   }
 
   /**
-   * Configure the button bindings for the copilot controller from the {@link configureBindings} method.
+   * Configure the button bindings for the copilot controller from the {@link configureBindings}
+   * method.
    *
    * <p>This controller is used to control the intake, conveyor, dump, and climber.
    *
@@ -169,63 +171,67 @@ public class RobotContainer {
     System.out.println("[BINDS] Configuring copilot controller");
     copilotJoystick.trigger().onTrue(Commands.runOnce(dump::extend).repeatedly());
     copilotJoystick.trigger().onFalse(Commands.runOnce(dump::retract).repeatedly());
-      configureButton(3, () -> {
-        intake.runIntakeFront(false);
-        conveyor.runConveyor(false);
-      });
-      configureButton(4, () -> {
-        intake.runIntakeFront(true);
-        conveyor.runConveyor(true);
-      });
-      configureButton(5, () -> {
-        intake.runIntakeSushi(false);
-        conveyor.runConveyor(false);
-      });
-      configureButton(6, () -> {
-        intake.runIntakeSushi(true);
-        conveyor.runConveyor(true);
-      });
-      configureButton(7, () -> conveyor.runFlywheel(FlywheelSpeed.LOW, false));
-      configureButton(9, () -> conveyor.runConveyor(true));
-      configureButton(10, () -> conveyor.runConveyor(false));
-      configureButton(11, () -> conveyor.runFlywheel(FlywheelSpeed.LOW, false));
-      configureButton(12, () -> conveyor.runFlywheel(FlywheelSpeed.NORMAL, false));
-      int pov = copilotJoystick.getHID().getPOV();
-      switch (pov) {
-        case 0:
-        case 45:
-        case 315:
-          Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.HIGH, false)).repeatedly();
-          break;
-        case 135:
-        case 180:
-        case 225:
-          Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.LOW, false)).repeatedly();
-          break;
-        default:
-          // Handle other cases or do nothing
-          break;
-      }
-      
-      if (copilotJoystick.getThrottle() > 0) {
-        Commands.runOnce(climb::extend);
-      } else if (copilotJoystick.getThrottle() < 0) {
-        Commands.runOnce(climb::retract);
-      }
-      System.out.println("[BINDS] Copilot controller configured");
+    configureButton(
+        3,
+        () -> {
+          intake.runIntakeFront(false);
+          conveyor.runConveyor(false);
+        });
+    configureButton(
+        4,
+        () -> {
+          intake.runIntakeFront(true);
+          conveyor.runConveyor(true);
+        });
+    configureButton(
+        5,
+        () -> {
+          intake.runIntakeSushi(false);
+          conveyor.runConveyor(false);
+        });
+    configureButton(
+        6,
+        () -> {
+          intake.runIntakeSushi(true);
+          conveyor.runConveyor(true);
+        });
+    configureButton(7, () -> conveyor.runFlywheel(FlywheelSpeed.LOW, false));
+    configureButton(9, () -> conveyor.runConveyor(true));
+    configureButton(10, () -> conveyor.runConveyor(false));
+    configureButton(11, () -> conveyor.runFlywheel(FlywheelSpeed.LOW, false));
+    configureButton(12, () -> conveyor.runFlywheel(FlywheelSpeed.NORMAL, false));
+    int pov = copilotJoystick.getHID().getPOV();
+    switch (pov) {
+      case 0:
+      case 45:
+      case 315:
+        Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.HIGH, false)).repeatedly();
+        break;
+      case 135:
+      case 180:
+      case 225:
+        Commands.runOnce(() -> conveyor.runFlywheel(FlywheelSpeed.LOW, false)).repeatedly();
+        break;
+      default:
+        // Handle other cases or do nothing
+        break;
     }
 
-    /**
-     * Configure a button to run a specific action when pressed.
-     * 
-     * @param buttonNumber The button index to configure, starting at 1.
-     * @param action The action to run when the button is pressed.
-     */
-    private void configureButton(int buttonNumber, Runnable action) {
-      copilotJoystick
-        .button(buttonNumber)
-        .whileTrue(
-          Commands.runOnce(action)
-            .repeatedly());
+    if (copilotJoystick.getThrottle() > 0) {
+      Commands.runOnce(climb::extend);
+    } else if (copilotJoystick.getThrottle() < 0) {
+      Commands.runOnce(climb::retract);
     }
+    System.out.println("[BINDS] Copilot controller configured");
+  }
+
+  /**
+   * Configure a button to run a specific action when pressed.
+   *
+   * @param buttonNumber The button index to configure, starting at 1.
+   * @param action The action to run when the button is pressed.
+   */
+  private void configureButton(int buttonNumber, Runnable action) {
+    copilotJoystick.button(buttonNumber).whileTrue(Commands.runOnce(action).repeatedly());
+  }
 }

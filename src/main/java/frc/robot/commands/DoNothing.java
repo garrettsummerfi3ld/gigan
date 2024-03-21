@@ -8,9 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class DoNothing extends Command {
   /**
-   * This command does nothing. It is useful for testing, debugging, and as a placeholder for commands when you don't want to do anything.
-   * 
-   * <p>It is recommended to use this command as a placeholder for commands that you don't want to do anything, rather than using {@link edu.wpi.first.wpilibj2.command.InstantCommand} or {@link edu.wpi.first.wpilibj2.command.WaitCommand}.
+   * This command does nothing. It is useful for testing, debugging, and as a placeholder for
+   * commands when you don't want to do anything.
+   *
+   * <p>It is recommended to use this command as a placeholder for commands that you don't want to
+   * do anything, rather than using {@link edu.wpi.first.wpilibj2.command.InstantCommand} or {@link
+   * edu.wpi.first.wpilibj2.command.WaitCommand}.
    */
   public DoNothing() {
     // Use addRequirements() here to declare subsystem dependencies.
