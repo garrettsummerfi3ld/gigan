@@ -5,6 +5,9 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.PathPlannerLogging;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
@@ -12,6 +15,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -20,11 +25,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants.Deadbands;
 import frc.robot.commands.DoNothing;
 import frc.robot.commands.swerve.AbsoluteDrive;
+import frc.robot.commands.auto.DumpAuto;
+import frc.robot.commands.auto.IntakeAuto;
+import frc.robot.commands.auto.ShootAuto;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem.FlywheelSpeed;
 import frc.robot.subsystems.DumpSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 import java.io.File;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -43,13 +52,6 @@ public class RobotContainer {
   final CommandJoystick copilotJoystick =
       new CommandJoystick(Constants.OperatorConstants.Joysticks.Port.COPILOT_CONTROLLER);
 
-  // Cameras are defined here
-  final PhotonCamera limelight = new PhotonCamera("limelight");
-  final PhotonCamera rasperryPi = new PhotonCamera("raspberry-pi");
-
-  // AprilTag fields are defined here
-  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase =
       new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
@@ -57,7 +59,16 @@ public class RobotContainer {
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final DumpSubsystem dump = new DumpSubsystem();
   private final ClimbSubsystem climb = new ClimbSubsystem();
+  private final Vision vision = new Vision();
   private final DoNothing nothing = new DoNothing();
+  private final IntakeAuto IntakeAuto = new IntakeAuto(intake);
+  private final ShootAuto ShootAuto = new ShootAuto(conveyor);
+  private final DumpAuto DumpAuto = new DumpAuto(dump);
+
+  private final PhotonCamera limelight = vision.getLimelight();
+  private final PhotonCamera intakeCamera = vision.getIntakeCamera();
+  private final PhotonCamera conveyorCamera = vision.getConveyorCamera();
+
 
   // Autonomous chooser is defined here
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -140,7 +151,7 @@ public class RobotContainer {
     pilotXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
     pilotXbox
         .leftBumper()
-        .whileTrue(Commands.runOnce(() -> drivebase.aimAtTarget(rasperryPi)).repeatedly());
+        .whileTrue(Commands.runOnce(() -> drivebase.aimAtTarget(intakeCamera)).repeatedly());
     System.out.println("[BINDS] Pilot controller configured");
   }
 
@@ -233,5 +244,14 @@ public class RobotContainer {
    */
   private void configureButton(int buttonNumber, Runnable action) {
     copilotJoystick.button(buttonNumber).whileTrue(Commands.runOnce(action).repeatedly());
+  }
+
+  /**
+   * Configure PathPlanner to use commands from any autonomous command that is registered in the path.
+    */
+  public void registerNamedAutoCommands() {
+    NamedCommands.registerCommand("intake", IntakeAuto);
+    NamedCommands.registerCommand("shoot", ShootAuto);
+    NamedCommands.registerCommand("dump", DumpAuto);
   }
 }

@@ -2,7 +2,10 @@
   "robotWidth": 0.69,
   "robotLength": 0.68,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "Intake Close",
+    "Taxi"
+  ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
