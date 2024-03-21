@@ -31,7 +31,12 @@ public class Vision extends SubsystemBase {
   private final Alert latencyAlert =
       new Alert("PhotonVision latency is too high, results may be inaccurate.", AlertType.WARNING);
 
-  /** Creates a new Vision subsystem, powered by PhotonVision. */
+  /**
+   * Creates a new Vision subsystem, powered by PhotonVision.
+   * 
+   * <p>PhotonVision is a vision processing library that provides a simple API for interacting with a
+   * variety of vision targets, including reflective tape, vision targets, and AprilTags.
+   */
   public Vision() {
     System.out.println("[VISION] Vision subsystem initialized.");
 
@@ -44,21 +49,21 @@ public class Vision extends SubsystemBase {
     // Cam mounted facing backwards, 12.5 in back from the robot, flat, and facing backwards
     Transform3d robotToLimelight =
         new Transform3d(
-            new Translation3d(Limelight.LENGTH, Limelight.WIDTH, Limelight.HEIGHT),
+            new Translation3d(Limelight.X_LOC, Limelight.Y_LOC, Limelight.Z_LOC),
             new Rotation3d(Limelight.ROLL, Limelight.PITCH, Limelight.YAW));
 
     // Cam mounted facing forwards, 11.75 in front of the robot, 20 degrees down, and facing
     // forwards
     Transform3d robotToIntakeCamera =
         new Transform3d(
-            new Translation3d(IntakeCamera.LENGTH, IntakeCamera.WIDTH, IntakeCamera.HEIGHT),
+            new Translation3d(IntakeCamera.X_LOC, IntakeCamera.Y_LOC, IntakeCamera.Z_LOC),
             new Rotation3d(IntakeCamera.ROLL, IntakeCamera.PITCH, IntakeCamera.YAW));
 
     // Cam mounted facing downwards, 5.5 in front of the robot, 90 degrees down, and facing
     // backwards
     Transform3d robotToConveyorCamera =
         new Transform3d(
-            new Translation3d(ConveyorCamera.LENGTH, ConveyorCamera.WIDTH, ConveyorCamera.HEIGHT),
+            new Translation3d(ConveyorCamera.X_LOC, ConveyorCamera.Y_LOC, ConveyorCamera.Z_LOC),
             new Rotation3d(ConveyorCamera.ROLL, ConveyorCamera.PITCH, ConveyorCamera.YAW));
 
     // Construct a PhotonPoseEstimator with the AprilTagFieldLayout, a PoseStrategy, the camera, and
@@ -78,7 +83,7 @@ public class Vision extends SubsystemBase {
   /**
    * Get the limelight camera
    *
-   * @return the limelight camera
+   * @return the limelight camera {@link PhotonCamera} object
    */
   public PhotonCamera getLimelight() {
     return limelight;
@@ -87,7 +92,7 @@ public class Vision extends SubsystemBase {
   /**
    * Get the intake camera
    *
-   * @return the intake camera
+   * @return the intake camera {@link PhotonCamera} object
    */
   public PhotonCamera getIntakeCamera() {
     return intakeCamera;
@@ -96,7 +101,7 @@ public class Vision extends SubsystemBase {
   /**
    * Get the conveyor camera
    *
-   * @return the conveyor camera
+   * @return the conveyor camera {@link PhotonCamera} object
    */
   public PhotonCamera getConveyorCamera() {
     return conveyorCamera;
@@ -105,7 +110,7 @@ public class Vision extends SubsystemBase {
   /**
    * Get the latest result from the limelight
    *
-   * @return the latest result from the limelight
+   * @return the latest result from the limelight in the form of a {@link PhotonPipelineResult}
    */
   public PhotonPipelineResult getLimelightResult() {
     return limelight.getLatestResult();
@@ -114,7 +119,7 @@ public class Vision extends SubsystemBase {
   /**
    * Get the latest result from the intake camera
    *
-   * @return the latest result from the intake camera
+   * @return the latest result from the intake camera in the form of a {@link PhotonPipelineResult}
    */
   public PhotonPipelineResult getIntakeCameraResult() {
     return intakeCamera.getLatestResult();
@@ -123,7 +128,7 @@ public class Vision extends SubsystemBase {
   /**
    * Get the latest result from the conveyor camera
    *
-   * @return the latest result from the conveyor camera
+   * @return the latest result from the conveyor camera in the form of a {@link PhotonPipelineResult}
    */
   public PhotonPipelineResult getConveyorCameraResult() {
     return conveyorCamera.getLatestResult();

@@ -157,9 +157,9 @@ public final class Constants {
   public static final class VisionConstants {
     public final class Limelight {
       public static final String NAME = "LIMELIGHT";
-      public static final double LENGTH = Units.inchesToMeters(-12.5); // inches to meters
-      public static final double WIDTH = Units.inchesToMeters(0.0); // inches to meters
-      public static final double HEIGHT = Units.inchesToMeters(-23.25); // inches to meters
+      public static final double X_LOC = Units.inchesToMeters(-12.5); // inches to meters
+      public static final double Y_LOC = Units.inchesToMeters(0.0); // inches to meters
+      public static final double Z_LOC = Units.inchesToMeters(-23.25); // inches to meters
       public static final double ROLL = Units.degreesToRadians(0.0); // degrees to radians
       public static final double PITCH = Units.degreesToRadians(0.0); // degrees to radians
       public static final double YAW = Units.degreesToRadians(180.0); // degrees to radians
@@ -167,9 +167,9 @@ public final class Constants {
 
     public final class IntakeCamera {
       public static final String NAME = "INTAKE-CAM";
-      public static final double LENGTH = Units.inchesToMeters(-11.75); // inches to meters
-      public static final double WIDTH = Units.inchesToMeters(0.0); // inches to meters
-      public static final double HEIGHT = Units.inchesToMeters(-12.5); // inches to meters
+      public static final double X_LOC = Units.inchesToMeters(-11.75); // inches to meters
+      public static final double Y_LOC = Units.inchesToMeters(0.0); // inches to meters
+      public static final double Z_LOC = Units.inchesToMeters(-12.5); // inches to meters
       public static final double ROLL = Units.degreesToRadians(0.0); // degrees to radians
       public static final double PITCH = Units.degreesToRadians(-20.0); // degrees to radians
       public static final double YAW = Units.degreesToRadians(0.0); // degrees to radians
@@ -177,9 +177,9 @@ public final class Constants {
 
     public final class ConveyorCamera {
       public static final String NAME = "CONVEYOR-CAM";
-      public static final double LENGTH = Units.inchesToMeters(-5.5); // inches to meters
-      public static final double WIDTH = Units.inchesToMeters(0.0); // inches to meters
-      public static final double HEIGHT = Units.inchesToMeters(-13.5); // inches to meters
+      public static final double X_LOC = Units.inchesToMeters(-5.5); // inches to meters
+      public static final double Y_LOC = Units.inchesToMeters(0.0); // inches to meters
+      public static final double Z_LOC = Units.inchesToMeters(-13.5); // inches to meters
       public static final double ROLL = Units.degreesToRadians(0.0); // degrees to radians
       public static final double PITCH = Units.degreesToRadians(90.0); // degrees to radians
       public static final double YAW = Units.degreesToRadians(180.0); // degrees to radians
