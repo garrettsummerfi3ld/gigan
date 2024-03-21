@@ -110,7 +110,7 @@ git checkout [branch-name-here]
 
 - [YAGSL](https://github.com/BroncBotz3481/YAGSL) is used for the swerve drivetrain
 - [AdvantageKit](https://github.com/Mechanical-Advantage/AdvantageKit) logging and diagnostics
-  - [Unofficial Rev CAN Logger](https://github.com/Mechanical-Advantage/URCL) (URCL) to perform additional logging
+  - [Unofficial REV-Compatible Logger](https://github.com/Mechanical-Advantage/URCL) (URCL) to perform additional logging
   - Power Distribution logging for power status during robot runtime
   - Writing all logs directly to a USB Drive connected to the RoboRIO
 - [PhotonVision](https://photonvision.org/) setup for performing autonomous tasks with Note detection
