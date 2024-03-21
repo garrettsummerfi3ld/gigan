@@ -41,14 +41,14 @@ public class DumpSubsystem extends SubsystemBase {
 
   /** Dumps the dump bed. */
   public void extend() {
-    dumpSolenoid.set(DoubleSolenoid.Value.kForward);
+    dumpSolenoid.set(DoubleSolenoid.Value.kReverse);
     isDumped = true;
     SmartDashboard.putBoolean(getName(), isDumped);
   }
 
   /** Retracts the dump bed. */
   public void retract() {
-    dumpSolenoid.set(DoubleSolenoid.Value.kReverse);
+    dumpSolenoid.set(DoubleSolenoid.Value.kForward);
     isDumped = false;
     SmartDashboard.putBoolean(getName(), isDumped);
   }
