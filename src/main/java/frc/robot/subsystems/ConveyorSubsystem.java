@@ -21,6 +21,13 @@ public class ConveyorSubsystem extends SubsystemBase {
   private final CANSparkMax flywheelMotorRight =
       new CANSparkMax(Flywheel.FLYWHEEL_MOTOR_RIGHT, MotorType.kBrushless);
 
+  /**
+   * Creates the conveyor subsystem.
+   * 
+   * <p>When the robot is initialized, the conveyor and flywheel motors are set to brake mode.
+   * 
+   * <p>When the robot is initialized, the conveyor and flywheel motors are set to their respective inverted values.
+   */
   public ConveyorSubsystem() {
     System.out.println("[CONVEYOR] ConveyorSubsystem initialized.");
     conveyorMotorLeft.setInverted(Conveyor.CONVEYOR_MOTOR_LEFT_INVERTED);
@@ -66,20 +73,9 @@ public class ConveyorSubsystem extends SubsystemBase {
    * @param isReversed Whether or not to reverse the flywheel.
    */
   public void runFlywheel(FlywheelSpeed speed, boolean isReversed) {
-    var flywheelMotorSpeed = 0.0;
-    switch (speed) {
-      case LOW:
-        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_LOW;
-        break;
-      case NORMAL:
-        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_NORMAL;
-        break;
-      case HIGH:
-        flywheelMotorSpeed = Flywheel.FLYWHEEL_MOTOR_SPEED_HIGH;
-        break;
-    }
+    double flywheelMotorSpeed = speed.speed; // Convert enum value to double
     if (isReversed) {
-      flywheelMotorSpeed *= -1;
+      flywheelMotorSpeed *= -1; // Perform multiplication
     }
     flywheelMotorLeft.set(flywheelMotorSpeed);
     flywheelMotorRight.set(flywheelMotorSpeed);
@@ -116,8 +112,18 @@ public class ConveyorSubsystem extends SubsystemBase {
   }
 
   public enum FlywheelSpeed {
-    LOW,
-    NORMAL,
-    HIGH
+    LOW(Flywheel.FLYWHEEL_MOTOR_SPEED_LOW),
+    NORMAL(Flywheel.FLYWHEEL_MOTOR_SPEED_NORMAL),
+    HIGH(Flywheel.FLYWHEEL_MOTOR_SPEED_HIGH);
+
+    private double speed;
+
+    FlywheelSpeed(double speed) {
+      this.speed = speed;
+    }
+
+    public double getSpeed() {
+      return speed;
+    }
   }
 }

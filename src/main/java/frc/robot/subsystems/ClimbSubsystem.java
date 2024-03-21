@@ -19,6 +19,15 @@ public class ClimbSubsystem extends SubsystemBase {
           HardwareConstants.PneumaticsChannels.CLIMB_IN);
   private boolean isClimbing = false;
 
+  /**
+   * Creates a climber subsystem.
+   * 
+   * <p>When the robot is initialized, the climb is retracted to avoid damage and the state of the climb is set to false.
+   * 
+   * <p>When the robot is climbing, the climb is extended to support the robot.
+   * 
+   * <p>When the robot is not climbing, the climb is retracted to avoid damage.
+   */
   public ClimbSubsystem() {
     System.out.println("[CLIMB] ClimbSubsystem initialized.");
     retract();

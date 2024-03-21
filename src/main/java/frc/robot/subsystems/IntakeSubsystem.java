@@ -16,6 +16,13 @@ public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax intakeFront =
       new CANSparkMax(Intake.INTAKE_FRONT, MotorType.kBrushless);
 
+  /**
+   * Creates the intake subsystem.
+   * 
+   * <p>When the robot is initialized, the intake sushi and front motors are set to brake mode.
+   * 
+   * <p>When the robot is initialized, the intake sushi and front motors are set to their respective inverted values.
+   */
   public IntakeSubsystem() {
     System.out.println("[INTAKE] IntakeSubsystem initialized.");
     intakeSushi.setInverted(Intake.INTAKE_SUSHI_INVERTED);
