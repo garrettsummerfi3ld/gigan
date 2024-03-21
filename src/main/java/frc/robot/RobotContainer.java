@@ -7,9 +7,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -124,9 +121,9 @@ public class RobotContainer {
    *
    * <p>This controller is used to drive the robot and control the swerve drive.
    *
-   * <p>The A button is used to zero the gyro. The X button is used to add a fake vision reading.
-   * The B button is used to drive to a specific pose. The Y button is used to lock the swerve
-   * drive.
+   * <p>The A button is used to zero the gyro. The X button is used to aim at the target using the
+   * limelight. The B button is used to aim at the target using the intake camera. The Y button is
+   * used to lock the swerve drive for better defensive driving.
    *
    * <p>This is using an Xbox controller.
    */
@@ -134,17 +131,8 @@ public class RobotContainer {
     System.out.println("[BINDS] Configuring pilot controller");
     pilotXbox.a().onTrue(Commands.runOnce(drivebase::zeroGyro));
     pilotXbox.x().onTrue(Commands.runOnce(() -> drivebase.aimAtTarget(limelight)));
-    pilotXbox
-        .b()
-        .whileTrue(
-            Commands.deferredProxy(
-                () ->
-                    drivebase.driveToPose(
-                        new Pose2d(new Translation2d(2, 7.5), Rotation2d.fromDegrees(0)))));
+    pilotXbox.b().onTrue(Commands.runOnce(() -> drivebase.aimAtTarget(intakeCamera)));
     pilotXbox.y().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-    pilotXbox
-        .leftBumper()
-        .whileTrue(Commands.runOnce(() -> drivebase.aimAtTarget(intakeCamera)).repeatedly());
     System.out.println("[BINDS] Pilot controller configured");
   }
 
