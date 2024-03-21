@@ -11,13 +11,17 @@ import frc.robot.subsystems.DumpSubsystem;
 public class DumpAuto extends Command {
   private final DumpSubsystem m_dumpSubsystem;
   private final Timer m_timer = new Timer();
+
   /**
    * Creates a new DumpAuto command.
-   * 
+   *
    * <p>When the command is initially scheduled, the timer is reset and started.
-   * 
-   * <p>When the command is executed, the dump subsystem is extended. If the timer sees that 1 second has passed, the dump subsystem is retracted. If the timer sees that 1.5 seconds have passed, the dump subsystem is extended. If the timer sees that 2 seconds have passed, the dump subsystem is retracted.
-   * 
+   *
+   * <p>When the command is executed, the dump subsystem is extended. If the timer sees that 1
+   * second has passed, the dump subsystem is retracted. If the timer sees that 1.5 seconds have
+   * passed, the dump subsystem is extended. If the timer sees that 2 seconds have passed, the dump
+   * subsystem is retracted.
+   *
    * @param dumpSubsystem The dump subsystem used by this command.
    */
   public DumpAuto(DumpSubsystem dumpSubsystem) {

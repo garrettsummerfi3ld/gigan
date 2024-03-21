@@ -153,9 +153,7 @@ public final class Constants {
     public static final double PHOTON_LATENCY = 1;
   }
 
-  /**
-   * Constants for the vision system.
-   */
+  /** Constants for the vision system. */
   public static final class VisionConstants {
     public final class Limelight {
       public static final String NAME = "LIMELIGHT";
@@ -166,6 +164,7 @@ public final class Constants {
       public static final double PITCH = Units.degreesToRadians(0.0); // degrees to radians
       public static final double YAW = Units.degreesToRadians(180.0); // degrees to radians
     }
+
     public final class IntakeCamera {
       public static final String NAME = "INTAKE-CAM";
       public static final double LENGTH = Units.inchesToMeters(-11.75); // inches to meters

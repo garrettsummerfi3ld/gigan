@@ -6,17 +6,11 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.util.PathPlannerLogging;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -24,10 +18,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants.Deadbands;
 import frc.robot.commands.DoNothing;
-import frc.robot.commands.swerve.AbsoluteDrive;
 import frc.robot.commands.auto.DumpAuto;
 import frc.robot.commands.auto.IntakeAuto;
 import frc.robot.commands.auto.ShootAuto;
+import frc.robot.commands.swerve.AbsoluteDrive;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem.FlywheelSpeed;
@@ -68,7 +62,6 @@ public class RobotContainer {
   private final PhotonCamera limelight = vision.getLimelight();
   private final PhotonCamera intakeCamera = vision.getIntakeCamera();
   private final PhotonCamera conveyorCamera = vision.getConveyorCamera();
-
 
   // Autonomous chooser is defined here
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -247,8 +240,9 @@ public class RobotContainer {
   }
 
   /**
-   * Configure PathPlanner to use commands from any autonomous command that is registered in the path.
-    */
+   * Configure PathPlanner to use commands from any autonomous command that is registered in the
+   * path.
+   */
   public void registerNamedAutoCommands() {
     NamedCommands.registerCommand("intake", IntakeAuto);
     NamedCommands.registerCommand("shoot", ShootAuto);

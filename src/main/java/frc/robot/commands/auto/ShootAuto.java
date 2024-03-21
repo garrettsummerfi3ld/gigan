@@ -12,13 +12,16 @@ import frc.robot.subsystems.ConveyorSubsystem.FlywheelSpeed;
 public class ShootAuto extends Command {
   private final ConveyorSubsystem m_conveyorSubsystem;
   private final Timer m_timer = new Timer();
+
   /**
    * Creates a new ShootAuto command.
-   * 
+   *
    * <p>When the command is initially scheduled, the timer is reset and started.
-   * 
-   * <p>When the command is executed, the conveyor subsystem is run. If the timer sees that 1 second has passed, the conveyor subsystem is run. If the timer sees that 1 second has passed, the conveyor subsystem is run.
-   * 
+   *
+   * <p>When the command is executed, the conveyor subsystem is run. If the timer sees that 1 second
+   * has passed, the conveyor subsystem is run. If the timer sees that 1 second has passed, the
+   * conveyor subsystem is run.
+   *
    * @param conveyorSubsystem The conveyor subsystem used by this command.
    */
   public ShootAuto(ConveyorSubsystem conveyorSubsystem) {

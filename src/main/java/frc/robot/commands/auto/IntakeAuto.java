@@ -11,13 +11,15 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeAuto extends Command {
   private final IntakeSubsystem m_intakeSubsystem;
   private final Timer m_timer = new Timer();
+
   /**
    * Creates a new IntakeAuto command.
-   * 
+   *
    * <p>When the command is initially scheduled, the timer is reset and started.
-   * 
-   * <p>When the command is executed, the intake subsystem is run. If the timer sees that 3 seconds have passed, the intake subsystem is stopped.
-   * 
+   *
+   * <p>When the command is executed, the intake subsystem is run. If the timer sees that 3 seconds
+   * have passed, the intake subsystem is stopped.
+   *
    * @param intakeSubsystem The intake subsystem used by this command.
    */
   public IntakeAuto(IntakeSubsystem intakeSubsystem) {

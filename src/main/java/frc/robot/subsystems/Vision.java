@@ -4,22 +4,22 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants.AlertContants;
-import frc.robot.util.Alert;
-import frc.robot.util.Alert.AlertType;
-import frc.robot.Constants.VisionConstants.Limelight;
-import frc.robot.Constants.VisionConstants.IntakeCamera;
-import frc.robot.Constants.VisionConstants.ConveyorCamera;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AlertContants;
+import frc.robot.Constants.VisionConstants.ConveyorCamera;
+import frc.robot.Constants.VisionConstants.IntakeCamera;
+import frc.robot.Constants.VisionConstants.Limelight;
+import frc.robot.util.Alert;
+import frc.robot.util.Alert.AlertType;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class Vision extends SubsystemBase {
   private final PhotonCamera limelight;
@@ -28,11 +28,10 @@ public class Vision extends SubsystemBase {
   private final AprilTagFieldLayout aprilTagFieldLayout;
   private final PhotonPoseEstimator photonLimeLightPoseEstimator;
 
-  private final Alert latencyAlert = new Alert("PhotonVision latency is too high, results may be inaccurate.", AlertType.WARNING);
+  private final Alert latencyAlert =
+      new Alert("PhotonVision latency is too high, results may be inaccurate.", AlertType.WARNING);
 
-  /**
-   * Creates a new Vision subsystem, powered by PhotonVision.
-   */
+  /** Creates a new Vision subsystem, powered by PhotonVision. */
   public Vision() {
     System.out.println("[VISION] Vision subsystem initialized.");
 
@@ -64,11 +63,12 @@ public class Vision extends SubsystemBase {
 
     // Construct a PhotonPoseEstimator with the AprilTagFieldLayout, a PoseStrategy, the camera, and
     // the transform from the robot to the camera.
-    photonLimeLightPoseEstimator = new PhotonPoseEstimator(
-        aprilTagFieldLayout,
-        PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
-        limelight,
-        robotToLimelight);
+    photonLimeLightPoseEstimator =
+        new PhotonPoseEstimator(
+            aprilTagFieldLayout,
+            PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
+            limelight,
+            robotToLimelight);
 
     // Set the multi tag fallback strategy to closest to reference pose
     photonLimeLightPoseEstimator.setMultiTagFallbackStrategy(
@@ -77,7 +77,7 @@ public class Vision extends SubsystemBase {
 
   /**
    * Get the limelight camera
-   * 
+   *
    * @return the limelight camera
    */
   public PhotonCamera getLimelight() {
@@ -86,7 +86,7 @@ public class Vision extends SubsystemBase {
 
   /**
    * Get the intake camera
-   * 
+   *
    * @return the intake camera
    */
   public PhotonCamera getIntakeCamera() {
@@ -95,7 +95,7 @@ public class Vision extends SubsystemBase {
 
   /**
    * Get the conveyor camera
-   * 
+   *
    * @return the conveyor camera
    */
   public PhotonCamera getConveyorCamera() {
@@ -104,7 +104,7 @@ public class Vision extends SubsystemBase {
 
   /**
    * Get the latest result from the limelight
-   * 
+   *
    * @return the latest result from the limelight
    */
   public PhotonPipelineResult getLimelightResult() {
@@ -113,7 +113,7 @@ public class Vision extends SubsystemBase {
 
   /**
    * Get the latest result from the intake camera
-   * 
+   *
    * @return the latest result from the intake camera
    */
   public PhotonPipelineResult getIntakeCameraResult() {
@@ -122,7 +122,7 @@ public class Vision extends SubsystemBase {
 
   /**
    * Get the latest result from the conveyor camera
-   * 
+   *
    * @return the latest result from the conveyor camera
    */
   public PhotonPipelineResult getConveyorCameraResult() {
@@ -135,7 +135,9 @@ public class Vision extends SubsystemBase {
     double limelightResult = getLimelightResult().getLatencyMillis() / 1000.0;
     double intakeCameraResult = getIntakeCameraResult().getLatencyMillis() / 1000.0;
     double conveyorCameraResult = getConveyorCameraResult().getLatencyMillis() / 1000.0;
-    if (limelightResult > AlertContants.PHOTON_LATENCY || intakeCameraResult > AlertContants.PHOTON_LATENCY || conveyorCameraResult > AlertContants.PHOTON_LATENCY) {
+    if (limelightResult > AlertContants.PHOTON_LATENCY
+        || intakeCameraResult > AlertContants.PHOTON_LATENCY
+        || conveyorCameraResult > AlertContants.PHOTON_LATENCY) {
       latencyAlert.set(true);
     } else {
       latencyAlert.set(false);
