@@ -1,0 +1,17 @@
+# Workflow to check for updates on FRC vendordeps
+name: Check for FRC Vendordep updates
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run every day at midnight
+
+jobs:
+  check-for-updates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for vendordeps updates
+        uses: garrettsummerfi3ld/frc-vendordep-update-action@v0.1.0
+
